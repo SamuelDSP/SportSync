@@ -1,6 +1,6 @@
-import { Jogador } from "./jogador-clase";
+import { Jogador } from "../jogador-clase";
 
-import "./PlayerCard.css";
+import "../estilos/PlayerCard.css";
 
 export function PlayerCard(person: Jogador) {
   return (
@@ -10,11 +10,9 @@ export function PlayerCard(person: Jogador) {
         <p>Age: {person.age}</p>
         <p>Maket Value: {person.mktValue}</p>
         <p>Position: {person.position}</p>
+        <button className="botao">CONTRATAR</button>
       </div>
       <br />
     </>
   );
 }
-
-
-
