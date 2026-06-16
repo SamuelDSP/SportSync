@@ -1,9 +1,10 @@
-import { TelaJogadores } from "./components/tela jogadores/TelaJogadores.tsx";
-import { TelaTimes } from "./components/TelaTimes.tsx";
-import { TelaEstatisticas } from "./components/TelaEstatisticas.tsx";
+import { TelaJogadores } from "./pages/tela jogadores/TelaJogadores.tsx";
+import { TelaTimes } from "./pages/TelaTimes.tsx";
+import { TelaFinanceiro } from "./pages/TelaFinanceiro.tsx";
 import { useState } from "react";
 import { NaviBar } from "./components/NaviBar.tsx";
-import { TelaElenco } from "./components/tela elenco/TelaElenco.tsx";
+import { TelaElenco } from "./pages/tela elenco/TelaElenco.tsx";
+import { TelaInicial } from "./pages/TelaInicial.tsx";
 
 import "./estilos/App.css";
 
@@ -15,9 +16,10 @@ export function App() {
       <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />
 
       <main>
-        {abaAtual === "jogadores" && <TelaJogadores />}
+        {abaAtual === "" && <TelaInicial/>}
+        {abaAtual === "jogadores" && <TelaJogadores verba={2000} />}
         {abaAtual === "times" && <TelaTimes />}
-        {abaAtual === "estatisticas" && <TelaEstatisticas />}
+        {abaAtual === "financeiro" && <TelaFinanceiro />}
         {abaAtual === "elenco" && <TelaElenco />}
       </main>
     </>

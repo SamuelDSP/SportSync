@@ -1,38 +1,38 @@
-import { Jogador } from "../jogador-clase";
-
 import "../estilos/PlayerCard.css";
 
-export interface PlayerCardProps {
-  name: string;
-  age: number;
-  mktValue: number;
-  position: string;
+import type { Jogador } from "../modelos/Jogador";
+
+interface PlayerCardProps {
+  jogador: Jogador;
   tipo: number;
 }
 
-export function PlayerCard({
-  name,
-  age,
-  mktValue,
-  position,
-  tipo,
-}: PlayerCardProps) {
+export function PlayerCard({ jogador, tipo }: PlayerCardProps) {
   return (
     <>
       <div className="player-card">
-        <h2>Name: {name}</h2>
-        <p>Age: {age}</p>
-        <p>Maket Value: {mktValue}</p>
-        <p>Position: {position}</p>
+        <h2>{jogador.name}</h2>
+        {(tipo === 1 || tipo === 4) && <p>Age: {jogador.age}</p>}
+        {(tipo === 1 || tipo === 4) && <p>Market Value: {jogador.mktValue}</p>}
+        <p>Position: {jogador.position}</p>
 
-        {tipo === 1 && <button className="botao" >Demitir</button>}
+        {tipo === 1 && <button className="botao">Demitir</button>}
 
-        {tipo === 2 && <button className="botao">Colocar no banco</button>}
+        {tipo === 2 && (
+          <>
+            <br />
+            <button className="botao">Colocar no banco</button>
+          </>
+        )}
 
-        {tipo === 3 && <button className="botao">Colocar de titular</button>}
+        {tipo === 3 && (
+          <>
+            <br />
+            <button className="botao">Colocar de titular</button>
+          </>
+        )}
 
         {tipo === 4 && <button className="botao">Contratar</button>}
-
       </div>
       <br />
     </>

@@ -1,5 +1,4 @@
-import { PlayerCardRow } from "../PlayerCardRow";
-import { PlayerCard } from "../PlayerCard";
+import { PlayerCardRow } from "../../components/PlayerCardRow";
 import "../../estilos/Campo.css"
 
 export function Campo() {
