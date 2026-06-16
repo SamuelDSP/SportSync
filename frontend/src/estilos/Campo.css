@@ -1,0 +1,9 @@
+.campo{
+    background-color: greenyellow;
+    padding: 20px;
+}
+
+#campo-titulo{
+   background-color: green; 
+   border-radius: 10px;
+}

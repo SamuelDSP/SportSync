@@ -1,6 +1,6 @@
-import "../estilos/tela-jogadores.css";
+import "../../estilos/tela-jogadores.css";
 
-import { PlayerCardColumn } from "./PlayerCardColumn.tsx";
+import { PlayerCardColumn } from "../PlayerCardColumn.tsx";
 
 export function TelaJogadores() {
   return (

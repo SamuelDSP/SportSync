@@ -3,4 +3,7 @@
   border-radius: 10px;
   padding: 10px;
   background-color: antiquewhite;
+  min-width: 180px;
+  max-width: 250px;
+  align-items: center;
 }

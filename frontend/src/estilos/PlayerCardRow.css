@@ -1,0 +1,6 @@
+.player-card-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
