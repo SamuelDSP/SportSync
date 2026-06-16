@@ -8,3 +8,18 @@ body {
   font-family: Arial, sans-serif;
   background-color: #01aab3;
 }
+
+.botao {
+  color: antiquewhite;
+  background-color: rgb(3, 71, 73);
+  padding: 5px;
+  border-radius: 20px;
+}
+
+.botao:hover {
+  background-color: rgb(2, 50, 52);
+}
+
+.botao:active {
+  background-color: rgb(1, 27, 28);
+}
