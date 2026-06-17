@@ -1,29 +1,27 @@
 import { PlayerCard } from "./PlayerCard";
 import "../estilos/PlayerCardColumn.css";
 import type { Jogador } from "../modelos/Jogador";
+import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardColumnProps {
   title: string;
   tipo: number;
+  jogadores: Jogador[];
+  onAlterar: (id: number, novoStatus: Status) => void;
 }
 
-
-const neymar: Jogador = {
-  id: 1,
-  name: "Neymar",
-  age: 34,
-  mktValue: 10,
-  position: "PE"
-}
-
-export function PlayerCardColumn({ title, tipo }: PlayerCardColumnProps) {
+export function PlayerCardColumn({
+  jogadores,
+  title,
+  tipo,
+  onAlterar,
+}: PlayerCardColumnProps) {
   return (
     <div className="player-card-column">
       <h2>{title}</h2>
-      <PlayerCard tipo={tipo} jogador={neymar}/>
-      <PlayerCard tipo={tipo} jogador={neymar}/>
-      <PlayerCard tipo={tipo} jogador={neymar}/>
-      <PlayerCard tipo={tipo} jogador={neymar}/>
+      {jogadores.map((jogador) => (
+        <PlayerCard onAlterar={onAlterar} tipo={tipo} jogador={jogador} />
+      ))}
     </div>
   );
 }

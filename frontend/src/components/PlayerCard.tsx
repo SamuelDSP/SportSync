@@ -1,13 +1,15 @@
 import "../estilos/PlayerCard.css";
 
-import type { Jogador } from "../modelos/Jogador";
+import type { Jogador } from "../modelos/Jogador.ts";
+import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardProps {
   jogador: Jogador;
   tipo: number;
+  onAlterar: (id:number ,novoStatus: Status)=>void;
 }
 
-export function PlayerCard({ jogador, tipo }: PlayerCardProps) {
+export function PlayerCard({ jogador, tipo, onAlterar }: PlayerCardProps) {
   return (
     <>
       <div className="player-card">
@@ -16,7 +18,7 @@ export function PlayerCard({ jogador, tipo }: PlayerCardProps) {
         {(tipo === 1 || tipo === 4) && <p>Market Value: {jogador.mktValue}</p>}
         <p>Position: {jogador.position}</p>
 
-        {tipo === 1 && <button className="botao">Demitir</button>}
+        {tipo === 1 && <button onClick={() => onAlterar(jogador.id, "mercado")} className="botao">Demitir</button>}
 
         {tipo === 2 && (
           <>

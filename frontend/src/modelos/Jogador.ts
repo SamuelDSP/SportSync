@@ -1,4 +1,4 @@
-
+export type Status = "titular" |"mercado" |"reserva"
 
 
 export interface Jogador {
@@ -7,4 +7,5 @@ export interface Jogador {
     age: number;
     mktValue: number;
     position: string;
+    status: Status;
 }

@@ -1,26 +1,21 @@
 import { PlayerCard } from "./PlayerCard";
 import "../estilos/PlayerCardRow.css";
 
-import type { Jogador } from "../modelos/Jogador";
+import type { Jogador } from "../modelos/Jogador.ts";
+import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
-    quantidade: number;
+  jogadores: Jogador[];
+  onAlterar: (id:number ,novoStatus: Status)=>void;
 }
 
-const neymar: Jogador = {
-  id: 1,
-  name: "Neymar",
-  age: 34,
-  mktValue: 10,
-  position: "PE"
-}
 
-export function PlayerCardRow({ quantidade }: PlayerCardRowProps) {
-    return (
-        <div className="player-card-row">
-            {Array.from({ length: quantidade }).map((_, index) => (
-                <PlayerCard jogador={neymar} tipo={2}/>
-            ))}
-        </div>
-    );
+export function PlayerCardRow({jogadores, onAlterar}: PlayerCardRowProps) {
+  return (
+    <div className="player-card-row">
+      {jogadores.map((jogador) => (
+        <PlayerCard key={jogador.id} onAlterar={onAlterar} tipo={1} jogador={jogador} />
+      ))}
+    </div>
+  );
 }
