@@ -23,18 +23,18 @@ export function PlayerCard({ jogador, tipo, onAlterar }: PlayerCardProps) {
         {tipo === 2 && (
           <>
             <br />
-            <button className="botao">Colocar no banco</button>
+            <button onClick={() => onAlterar(jogador.id, "reserva")} className="botao">Colocar no banco</button>
           </>
         )}
 
         {tipo === 3 && (
           <>
             <br />
-            <button className="botao">Colocar de titular</button>
+            <button onClick={() => onAlterar(jogador.id, "titular")} className="botao">Colocar de titular</button>
           </>
         )}
 
-        {tipo === 4 && <button className="botao">Contratar</button>}
+        {tipo === 4 && <button onClick={() => onAlterar(jogador.id, "reserva")} className="botao">Contratar</button>}
       </div>
       <br />
     </>

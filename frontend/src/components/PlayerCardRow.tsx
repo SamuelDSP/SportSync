@@ -6,15 +6,26 @@ import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
   jogadores: Jogador[];
-  onAlterar: (id:number ,novoStatus: Status)=>void;
+  onAlterar: (id: number, novoStatus: Status) => void;
+  tipo: number;
+  limit: number;
 }
 
-
-export function PlayerCardRow({jogadores, onAlterar}: PlayerCardRowProps) {
+export function PlayerCardRow({
+  limit,
+  tipo,
+  jogadores,
+  onAlterar,
+}: PlayerCardRowProps) {
   return (
     <div className="player-card-row">
       {jogadores.map((jogador) => (
-        <PlayerCard key={jogador.id} onAlterar={onAlterar} tipo={1} jogador={jogador} />
+        <PlayerCard
+          key={jogador.id}
+          onAlterar={onAlterar}
+          tipo={tipo}
+          jogador={jogador}
+        />
       ))}
     </div>
   );
