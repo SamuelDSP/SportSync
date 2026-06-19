@@ -201,6 +201,7 @@ export function App() {
       const golTitulares = titulares.filter((p) => p.position === "Goleiro");
       const meiTitulares = titulares.filter((p) => p.position === "Meio-campo");
 
+      ,
       if (
         player.position === "Defensor" &&
         zagTitulares.length >= rowlimit
@@ -240,10 +241,10 @@ export function App() {
 
   return (
     <>
-      <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />
+      {abaAtual !== "" && <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />}
 
       <main>
-        {abaAtual === "" && <TelaInicial />}
+        {abaAtual === "" && <TelaInicial setAbaAtual={setAbaAtual} />}
         {abaAtual === "jogadores" && (
           <TelaJogadores jogadores={jogadores} onAlterar={onAlterar} />
         )}

@@ -14,9 +14,9 @@
 
 }
 
-#barrapesquisa{
-  padding: 10px;
-  margin: 20px;
-  width: 250px;
+.amount{
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid black;
   border-radius: 10px;
 }
