@@ -1,7 +1,7 @@
-
-
-.tela-jogadores{
-  text-align: center;
+.telajogadores{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 

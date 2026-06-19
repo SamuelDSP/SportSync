@@ -7,7 +7,8 @@ interface PlayerCardColumnProps {
   title: string;
   tipo: number;
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: Status) => void;
+  onAlterar: (id: number, novoStatus: Status, rowlimit: number) => void;
+  rowlimit: number;
 }
 
 export function PlayerCardColumn({
@@ -15,12 +16,13 @@ export function PlayerCardColumn({
   title,
   tipo,
   onAlterar,
+  rowlimit,
 }: PlayerCardColumnProps) {
   return (
     <div className="player-card-column">
       <h2 id="titulo">{title}</h2>
       {jogadores.map((jogador) => (
-        <PlayerCard onAlterar={onAlterar} tipo={tipo} jogador={jogador} />
+        <PlayerCard onAlterar={onAlterar} tipo={tipo} jogador={jogador} rowlimit={rowlimit}/>
       ))}
     </div>
   );

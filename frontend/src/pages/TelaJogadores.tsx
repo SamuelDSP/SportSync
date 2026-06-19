@@ -10,7 +10,7 @@ import { useState } from "react";
 
 interface TelaJogadoresProps{
   jogadores: Jogador[];
-  onAlterar: (id:number , novoStatus: Status)=>void;
+  onAlterar: (id:number , novoStatus: Status, rowlimit: number)=>void;
 }
 
 export function TelaJogadores({jogadores, onAlterar}: TelaJogadoresProps) {
@@ -27,14 +27,14 @@ export function TelaJogadores({jogadores, onAlterar}: TelaJogadoresProps) {
   const Goleiro=jogadoresFiltrados.filter(j=>(j.position==="Goleiro" && j.status==="mercado"));
   return (
     <>
-      <div className="tela-jogadores">
-        <h1>Tela de Jogadores</h1>
+      <div className="telajogadores">
+        <h1 className="titulo">Tela de Jogadores</h1>
         <input type="text" name="" id="barrapesquisa" placeholder="Pesquise um jogador pelo nome..." value={busca} onChange={(e)=>setBusca(e.target.value)}/>
         <div className="colunas">
-          <PlayerCardColumn tipo={4} title="Atacantes" jogadores={Atacante} onAlterar={onAlterar}/>
-          <PlayerCardColumn tipo={4} title="Meio-Campistas" jogadores={Meiocampo} onAlterar={onAlterar}/>
-          <PlayerCardColumn tipo={4} title="Defensores" jogadores={Defensor} onAlterar={onAlterar}/>
-          <PlayerCardColumn tipo={4} title="Goleiros" jogadores={Goleiro} onAlterar={onAlterar}/>
+          <PlayerCardColumn rowlimit={0} tipo={4} title="Atacantes" jogadores={Atacante} onAlterar={onAlterar}/>
+          <PlayerCardColumn rowlimit={0} tipo={4} title="Meio-Campistas" jogadores={Meiocampo} onAlterar={onAlterar}/>
+          <PlayerCardColumn rowlimit={0} tipo={4} title="Defensores" jogadores={Defensor} onAlterar={onAlterar}/>
+          <PlayerCardColumn rowlimit={0} tipo={4} title="Goleiros" jogadores={Goleiro} onAlterar={onAlterar}/>
         </div>
       </div>
     </>

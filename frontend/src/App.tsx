@@ -180,14 +180,53 @@ export function App() {
     },
   ]);
 
-  function onAlterar(id: number, novoStatus: Status) {
+  function onAlterar(id: number, novoStatus: Status, rowlimit: number) {
+    const player = jogadores.find((p) => p.id === id);
+    if (!player) return;
+
+    const titulares = jogadores.filter(
+      (jogador) => jogador.status === "titular",
+    );
+
     if (novoStatus === "titular" && jogadores) {
-      const qtdTitulares = jogadores.filter(
-        (jogador) => jogador.status === "titular",
-      ).length;
+      const qtdTitulares = titulares.length;
 
       if (qtdTitulares >= 11) {
         alert("Já existem 11 titulares!");
+        return;
+      }
+
+      const zagTitulares = titulares.filter((p) => p.position === "Defensor");
+      const ataTitulares = titulares.filter((p) => p.position === "Atacante");
+      const golTitulares = titulares.filter((p) => p.position === "Goleiro");
+      const meiTitulares = titulares.filter((p) => p.position === "Meio-campo");
+
+      if (
+        player.position === "Defensor" &&
+        zagTitulares.length >= rowlimit
+      ) {
+        alert("A quantidade de titulares nessa posição foi atingida!");
+        return;
+      }
+      if (
+        player.position === "Atacante" &&
+        ataTitulares.length >= rowlimit
+      ) {
+        alert("A quantidade de titulares nessa posição foi atingida!");
+        return;
+      }
+      if (
+        player.position === "Goleiro" &&
+        golTitulares.length >= rowlimit
+      ) {
+        alert("A quantidade de titulares nessa posição foi atingida!");
+        return;
+      }
+      if (
+        player.position === "Meio-campo" &&
+        meiTitulares.length >= rowlimit
+      ) {
+        alert("A quantidade de titulares nessa posição foi atingida!");
         return;
       }
     }

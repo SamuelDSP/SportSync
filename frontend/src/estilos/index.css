@@ -14,6 +14,7 @@ body {
   background-color: rgb(3, 71, 73);
   padding: 5px;
   border-radius: 20px;
+  margin: 10px;
 }
 
 .botao:hover {
@@ -22,4 +23,8 @@ body {
 
 .botao:active {
   background-color: rgb(1, 27, 28);
+}
+
+.titulo{
+  width: 100%;
 }

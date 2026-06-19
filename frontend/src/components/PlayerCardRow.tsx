@@ -6,13 +6,13 @@ import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: Status) => void;
+  onAlterar: (id: number, novoStatus: Status, rowlimit:number) => void;
   tipo: number;
-  limit: number;
+  rowlimit: number;
 }
 
 export function PlayerCardRow({
-  limit,
+  rowlimit,
   tipo,
   jogadores,
   onAlterar,
@@ -25,6 +25,7 @@ export function PlayerCardRow({
           onAlterar={onAlterar}
           tipo={tipo}
           jogador={jogador}
+          rowlimit={rowlimit}
         />
       ))}
     </div>

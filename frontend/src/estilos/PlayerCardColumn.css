@@ -1,6 +1,9 @@
 .player-card-column {
   background-color: rgb(3, 71, 73, 0.4);
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
