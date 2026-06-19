@@ -1,4 +1,4 @@
-export type Status = "titular" |"mercado" |"reserva"
+export type Status = "titular" |"mercado" |"reserva"| "lesionado"
 
 
 export interface Jogador {

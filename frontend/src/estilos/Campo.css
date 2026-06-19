@@ -1,6 +1,8 @@
 .campo{
     background-color: greenyellow;
     padding: 20px;
+    width: 900px;
+    height: 750px;
 }
 
 #campo-titulo{

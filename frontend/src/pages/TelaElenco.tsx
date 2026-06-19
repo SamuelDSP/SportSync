@@ -6,6 +6,7 @@ import type { Status } from "../modelos/Jogador.ts";
 import { PlayerCardRow } from "../components/PlayerCardRow";
 import { PlayerCardColumn } from "../components/PlayerCardColumn.tsx";
 import "../estilos/Campo.css"
+import { useState } from "react";
 
 interface TelaElencoProps {
   jogadores: Jogador[];
@@ -13,18 +14,21 @@ interface TelaElencoProps {
 }
 
 export function TelaElenco({ jogadores, onAlterar }: TelaElencoProps) {
+
   const titulares = jogadores.filter((j) => j.status === "titular");
   const reservas = jogadores.filter((j) => j.status === "reserva");
 
   const AtacanteTitu = titulares.filter((j) => j.position === "Atacante");
-  const MeiocampoTitu = titulares.filter((j) => j.position === "Defensor");
-  const DefensorTitu = titulares.filter((j) => j.position === "Meio-campo");
+  const DefensorTitu = titulares.filter((j) => j.position === "Defensor");
+  const MeiocampoTitu = titulares.filter((j) => j.position === "Meio-campo");
   const GoleiroTitu = titulares.filter((j) => j.position === "Goleiro");
 
   const Atacante = reservas.filter((j) => j.position === "Atacante");
-  const Meiocampo = reservas.filter((j) => j.position === "Defensor");
-  const Defensor = reservas.filter((j) => j.position === "Meio-campo");
+  const Defensor = reservas.filter((j) => j.position === "Defensor");
+  const Meiocampo = reservas.filter((j) => j.position === "Meio-campo");
   const Goleiro = reservas.filter((j) => j.position === "Goleiro");
+
+
   return (
     <>
       <h1>Tela Elenco</h1>

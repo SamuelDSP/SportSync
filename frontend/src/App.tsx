@@ -70,7 +70,7 @@ export function App() {
       age: 22,
       mktValue: 18000000,
       position: "Meio-campo",
-      status: "reserva",
+      status: "lesionado",
     },
 
     // MERCADO
@@ -191,6 +191,7 @@ export function App() {
         return;
       }
     }
+
     setJogadores((jogadores) =>
       jogadores.map((jogador) =>
         jogador.id === id ? { ...jogador, status: novoStatus } : jogador,

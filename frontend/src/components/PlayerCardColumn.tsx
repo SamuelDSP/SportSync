@@ -18,7 +18,7 @@ export function PlayerCardColumn({
 }: PlayerCardColumnProps) {
   return (
     <div className="player-card-column">
-      <h2>{title}</h2>
+      <h2 id="titulo">{title}</h2>
       {jogadores.map((jogador) => (
         <PlayerCard onAlterar={onAlterar} tipo={tipo} jogador={jogador} />
       ))}
