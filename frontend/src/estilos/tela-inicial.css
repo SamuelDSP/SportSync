@@ -1,7 +1,204 @@
-.tela-inicio {
-  width: 100%;
-  height: 100%;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+
+/* ── HERO ── */
+.hero {
+  min-height: 52vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
+  padding: 7rem 4rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(83, 92, 88, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #00E676;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: #00E676;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  background: transparent;
+  display: flex;
+  align-items: center;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: #00E676;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #8a8a9a;
+  max-width: 46ch;
+  line-height: 1.75;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── MÓDULOS ── */
+.modulos {
+  padding: 2rem 4rem 5rem;
+}
+
+.modulos-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #8a8a9a;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.modulo-card {
+  background: #0d0d18;
+  padding: 2.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.modulo-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00E676;
+  transition: width 0.35s ease;
+}
+
+.modulo-card:hover {
+  background: #13131f;
+}
+
+.modulo-card:hover::after {
+  width: 100%;
+}
+
+.modulo-titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.modulo-desc {
+  font-size: 0.83rem;
+  font-weight: 300;
+  color: #8a8a9a;
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.modulo-cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #00E676;
+  letter-spacing: 0.04em;
+  font-family: 'Inter', sans-serif;
+}
+
+.modulo-card:hover .modulo-cta {
+  letter-spacing: 0.08em;
+}
+
+/* ── FOOTER ── */
+.rodape {
+  padding: 1.75rem 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rodape p {
+  font-size: 0.75rem;
+  color: #8a8a9a;
+  letter-spacing: 0.04em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── ANIMAÇÕES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.65s ease forwards;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.22s; }
+.delay-3 { animation-delay: 0.36s; }
+
+/* ── RESPONSIVO ── */
+@media (max-width: 1100px) {
+  .modulos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 6rem 1.5rem 2rem; }
+  .modulos { padding: 1.5rem 1.5rem 4rem; }
+  .modulos-grid { grid-template-columns: 1fr; }
+  .rodape { padding: 1.5rem; flex-direction: column; gap: 0.4rem; text-align: center; }
 }
