@@ -5,12 +5,14 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
-  font-family: 'Inter', Arial, sans-serif;
-  background-color: #10101b;
+  background-color: #161625;
   color: #ffffff;
-  min-height: 100vh;
+}
+
+body.dentro {
+  background-color: #ffffff !important;
+  color: #000000;
 }
 
 .botao {

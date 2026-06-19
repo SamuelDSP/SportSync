@@ -14,18 +14,37 @@ import "./estilos/App.css";
 export function App() {
   const [abaAtual, setAbaAtual] = useState("");
   const [jogadores, setJogadores] = useState<Jogador[]>([]);
-
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (abaAtual === "") {
+      document.body.classList.remove("dentro");
+    } else {
+      document.body.classList.add("dentro");
+    }
+  }, [abaAtual]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getJogadores();
+        setJogadores(data);
+      } catch (error) {
+        console.error("Erro ao carregar jogadores:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   async function onAlterar(id: number, novoStatus: Status, rowlimit: number) {
     const player = jogadores.find((p) => p.id === id);
     if (!player) return;
 
-    const titulares = jogadores.filter(
-      (jogador) => jogador.status === "titular",
-    );
+    const titulares = jogadores.filter((jogador) => jogador.status === "titular");
 
-    if (novoStatus === "titular" && jogadores) {
+    if (novoStatus === "titular") {
       const qtdTitulares = titulares.length;
 
       if (qtdTitulares >= 11) {
@@ -58,7 +77,6 @@ export function App() {
 
     try {
       await atualizarStatus(id, novoStatus);
-
       setJogadores((jogadores) =>
         jogadores.map((jogador) =>
           jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
@@ -70,27 +88,11 @@ export function App() {
     }
   }
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const data = await getJogadores();
-        setJogadores(data);
-      } catch (error) {
-        console.error("Erro ao carregar jogadores:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-  }, []);
-
   if (loading) return <p>Carregando...</p>;
 
   return (
     <>
       {abaAtual !== "" && <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />}
-
       <main>
         {abaAtual === "" && <TelaInicial setAbaAtual={setAbaAtual} />}
         {abaAtual === "jogadores" && (
