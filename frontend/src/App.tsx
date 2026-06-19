@@ -89,10 +89,10 @@ export function App() {
 
   return (
     <>
-      <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />
+      {abaAtual !== "" && <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />}
 
       <main>
-        {abaAtual === "" && <TelaInicial />}
+        {abaAtual === "" && <TelaInicial setAbaAtual={setAbaAtual} />}
         {abaAtual === "jogadores" && (
           <TelaJogadores jogadores={jogadores} onAlterar={onAlterar} />
         )}
