@@ -8,7 +8,8 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
   return (
     <>
       <section className="hero">
-        <p className="hero-eyebrow fade-up delay-1">Software de gestão esportiva</p>
+        <p className="hero-eyebrow fade-up delay-1" style={{ alignSelf: 'flex-start' }}>
+          Software de gestão esportiva</p>
         <h1 className="hero-title fade-up delay-2">
           <img src="/src/assets/logo.png" alt="logo" className="hero-logo" />
             SPORTSYNC

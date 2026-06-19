@@ -201,7 +201,6 @@ export function App() {
       const golTitulares = titulares.filter((p) => p.position === "Goleiro");
       const meiTitulares = titulares.filter((p) => p.position === "Meio-campo");
 
-      ,
       if (
         player.position === "Defensor" &&
         zagTitulares.length >= rowlimit
