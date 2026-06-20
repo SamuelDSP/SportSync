@@ -1,5 +1,11 @@
 
 
 export function TelaTimes() {
-  return <h1>Tela de Times</h1>;
+  return(
+    <>
+      <h1>Tela de Times</h1>
+      
+    </>
+
+  );
 }

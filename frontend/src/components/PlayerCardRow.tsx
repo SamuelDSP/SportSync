@@ -6,7 +6,7 @@ import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: Status, rowlimit:number) => void;
+  onAlterar: (id: number, novoStatus: Status, rowlimit: number) => void;
   tipo: number;
   rowlimit: number;
 }
