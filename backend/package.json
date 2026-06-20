@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsx tests/run-tests.ts",
+    "typecheck": "tsc --noEmit",
     "dev": "tsx watch src/servidor.ts",
     "start": "tsx src/servidor.ts",
     "db:push": "prisma db push",
