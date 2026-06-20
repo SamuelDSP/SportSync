@@ -1,11 +1,14 @@
-export type Status = "titular" |"mercado" |"reserva"| "lesionado"
+export type StatusUI = "titular" |"MERCADO" |"reserva"|"lesionado"
+
+export type StatusAPI = "MERCADO"|"ELENCO"|"DEMITIDO"
+
 
 
 export interface Jogador {
     id: number;
-    name: string;
-    age: number;
-    mktValue: number;
-    position: string;
-    status: Status;
+    nome: string;
+    idade: number;
+    valorMercado: number;
+    posicao: string;
+    status: StatusUI;
 }

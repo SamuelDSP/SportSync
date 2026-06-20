@@ -1,4 +1,4 @@
-import { TelaJogadores } from "./pages/TelaJogadores.tsx";
+import { TelaMercado } from "./pages/TelaMercado.tsx";
 import { TelaTimes } from "./pages/TelaTimes.tsx";
 import { TelaFinanceiro } from "./pages/TelaFinanceiro.tsx";
 import { useState, useEffect } from "react";
@@ -6,15 +6,27 @@ import { NaviBar } from "./components/NaviBar.tsx";
 import { TelaElenco } from "./pages/TelaElenco.tsx";
 import { TelaInicial } from "./pages/TelaInicial.tsx";
 import type { Jogador } from "./modelos/Jogador.ts";
-import type { Status } from "./modelos/Jogador.ts";
-import { atualizarStatus } from "./services/jogadorService";
-import { getJogadores } from "./services/getJogadores.ts";
+import type { StatusUI } from "./modelos/Jogador.ts";
+import {
+  getJogadoresElenco,
+  getJogadoresMercado,
+} from "./services/getJogadores.ts";
 import "./estilos/App.css";
+import { demitirJogador, contratarJogador } from "./services/alterarStatus.ts";
 
 export function App() {
   const [abaAtual, setAbaAtual] = useState("");
-  const [jogadores, setJogadores] = useState<Jogador[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [jogadores, setJogadores] = useState<Jogador[]>(
+    Array.from({ length: 800 }, (_, i) => ({
+      id: i + 1,
+      nome: `Jogador ${i + 1}`,
+      idade: 20 + (i % 15),
+      valorMercado: 1000000 * (i + 1),
+      posicao: ["Goleiro", "Defensor", "Meio-campo", "Atacante"][i % 4],
+      status: "MERCADO",
+    })),
+  );
+  const [loading, setLoading] = useState(false); // lembrar de mudar para true dps de testes
 
   useEffect(() => {
     if (abaAtual === "") {
@@ -24,11 +36,16 @@ export function App() {
     }
   }, [abaAtual]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     async function load() {
       try {
-        const data = await getJogadores();
+        const jogadoresElenco = await getJogadoresElenco(0);
+        const jogadoresMercado = await getJogadoresMercado();
+        const data = [...jogadoresElenco, ...jogadoresMercado];
         setJogadores(data);
+
+        const clubes
+
       } catch (error) {
         console.error("Erro ao carregar jogadores:", error);
       } finally {
@@ -38,11 +55,18 @@ export function App() {
     load();
   }, []);
 
-  async function onAlterar(id: number, novoStatus: Status, rowlimit: number) {
+
+  coloquei como comentario para testar
+
+  */
+
+  async function onAlterar(id: number, novoStatus: StatusUI, rowlimit: number) {
     const player = jogadores.find((p) => p.id === id);
     if (!player) return;
 
-    const titulares = jogadores.filter((jogador) => jogador.status === "titular");
+    const titulares = jogadores.filter(
+      (jogador) => jogador.status === "titular",
+    );
 
     if (novoStatus === "titular") {
       const qtdTitulares = titulares.length;
@@ -52,39 +76,69 @@ export function App() {
         return;
       }
 
-      const zagTitulares = titulares.filter((p) => p.position === "Defensor");
-      const ataTitulares = titulares.filter((p) => p.position === "Atacante");
-      const golTitulares = titulares.filter((p) => p.position === "Goleiro");
-      const meiTitulares = titulares.filter((p) => p.position === "Meio-campo");
+      const zagTitulares = titulares.filter((p) => p.posicao === "Defensor");
+      const ataTitulares = titulares.filter((p) => p.posicao === "Atacante");
+      const golTitulares = titulares.filter((p) => p.posicao === "Goleiro");
+      const meiTitulares = titulares.filter((p) => p.posicao === "Meio-campo");
 
-      if (player.position === "Defensor" && zagTitulares.length >= rowlimit) {
+      if (player.posicao === "Defensor" && zagTitulares.length >= rowlimit) {
         alert("A quantidade de titulares nessa posição foi atingida!");
         return;
       }
-      if (player.position === "Atacante" && ataTitulares.length >= rowlimit) {
+      if (player.posicao === "Atacante" && ataTitulares.length >= rowlimit) {
         alert("A quantidade de titulares nessa posição foi atingida!");
         return;
       }
-      if (player.position === "Goleiro" && golTitulares.length >= rowlimit) {
+      if (player.posicao === "Goleiro" && golTitulares.length >= rowlimit) {
         alert("A quantidade de titulares nessa posição foi atingida!");
         return;
       }
-      if (player.position === "Meio-campo" && meiTitulares.length >= rowlimit) {
+      if (player.posicao === "Meio-campo" && meiTitulares.length >= rowlimit) {
         alert("A quantidade de titulares nessa posição foi atingida!");
         return;
       }
-    }
 
-    try {
-      await atualizarStatus(id, novoStatus);
       setJogadores((jogadores) =>
         jogadores.map((jogador) =>
           jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
         ),
       );
-    } catch (error) {
-      console.error("Erro ao atualizar jogador:", error);
-      alert("Erro ao atualizar jogador.");
+    }
+
+    if (novoStatus === "reserva") {
+      if (player.status === "MERCADO") {
+        try {
+          await contratarJogador(1, id);
+          setJogadores((jogadores) =>
+            jogadores.map((jogador) =>
+              jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
+            ),
+          );
+        } catch (error) {
+          console.error("Erro ao contratar jogador:", error);
+          alert("Erro ao contratar jogador.");
+        }
+      } else {
+        setJogadores((jogadores) =>
+          jogadores.map((jogador) =>
+            jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
+          ),
+        );
+      }
+    }
+
+    if (novoStatus === "MERCADO") {
+      try {
+        await demitirJogador(1, id);
+        setJogadores((jogadores) =>
+          jogadores.map((jogador) =>
+            jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
+          ),
+        );
+      } catch (error) {
+        console.error("Erro ao demitir jogador:", error);
+        alert("Erro ao demitir jogador.");
+      }
     }
   }
 
@@ -92,11 +146,13 @@ export function App() {
 
   return (
     <>
-      {abaAtual !== "" && <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />}
-      <main>
+      {abaAtual !== "" && (
+        <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />
+      )}
+      <main className="telas">
         {abaAtual === "" && <TelaInicial setAbaAtual={setAbaAtual} />}
         {abaAtual === "jogadores" && (
-          <TelaJogadores jogadores={jogadores} onAlterar={onAlterar} />
+          <TelaMercado jogadores={jogadores} onAlterar={onAlterar} />
         )}
         {abaAtual === "times" && <TelaTimes />}
         {abaAtual === "financeiro" && <TelaFinanceiro />}

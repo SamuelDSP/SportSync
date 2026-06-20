@@ -4,3 +4,8 @@ h1{
     margin-bottom: 30px;
     background-color: antiquewhite;
 }
+
+.telas{
+    flex: 1;
+    overflow-y: auto;
+}

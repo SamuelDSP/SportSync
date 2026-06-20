@@ -1,6 +1,6 @@
 import { PlayerCard } from "./PlayerCard";
 import "../estilos/PlayerCardColumn.css";
-import type { Jogador } from "../modelos/Jogador";
+import type { Jogador } from "../modelos/Jogador.ts";
 import type { Status } from "../modelos/Jogador.ts";
 
 interface PlayerCardColumnProps {
@@ -22,7 +22,12 @@ export function PlayerCardColumn({
     <div className="player-card-column">
       <h2 id="titulo">{title}</h2>
       {jogadores.map((jogador) => (
-        <PlayerCard onAlterar={onAlterar} tipo={tipo} jogador={jogador} rowlimit={rowlimit}/>
+        <PlayerCard
+          onAlterar={onAlterar}
+          tipo={tipo}
+          jogador={jogador}
+          rowlimit={rowlimit}
+        />
       ))}
     </div>
   );
