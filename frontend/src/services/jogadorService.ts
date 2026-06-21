@@ -1,6 +1,4 @@
-
-
-const API_URL = "http://localhost:8080";
+import { API_URL } from "./api";
 
 
 export async function atualizarStatus(
