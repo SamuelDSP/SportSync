@@ -7,6 +7,7 @@ import { PosicaoJogador } from "../modelos/PosicaoJogador.js";
 import { Receita } from "../modelos/Receita.js";
 import { SituacaoFisica } from "../modelos/SituacaoFisica.js";
 import { StatusJogador } from "../modelos/StatusJogador.js";
+import { TipoElenco } from "../modelos/TipoElenco.js";
 import { TipoTransacao } from "../modelos/TipoTransacao.js";
 import { TransacaoFinanceira } from "../modelos/TransacaoFinanceira.js";
 
@@ -28,6 +29,7 @@ type RegistroJogador = {
   salarioDesejado: number;
   posicao: string;
   status: string;
+  tipoElenco: string | null;
   situacaoFisica: string;
   gravidadeLesao: string | null;
   diasLesaoRestantes: number;
@@ -153,6 +155,7 @@ export class FinanceiroRepositorio {
           clubeId,
           salarioAtual: salarioAceito,
           status: StatusJogador.Elenco,
+          tipoElenco: TipoElenco.Reserva,
         },
       });
 
@@ -188,6 +191,7 @@ export class FinanceiroRepositorio {
           clubeId: null,
           salarioAtual: null,
           status: StatusJogador.Demitido,
+          tipoElenco: null,
         },
       });
 
@@ -264,6 +268,7 @@ export class FinanceiroRepositorio {
       registro.salarioDesejado,
       registro.posicao as PosicaoJogador,
       registro.status as StatusJogador,
+      registro.tipoElenco as TipoElenco | null,
       registro.situacaoFisica as SituacaoFisica,
       registro.gravidadeLesao as GravidadeLesao | null,
       registro.diasLesaoRestantes,

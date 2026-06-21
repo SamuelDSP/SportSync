@@ -2,6 +2,7 @@ import { GravidadeLesao, diasPorGravidade } from "./GravidadeLesao.js";
 import { PosicaoJogador } from "./PosicaoJogador.js";
 import { SituacaoFisica } from "./SituacaoFisica.js";
 import { StatusJogador } from "./StatusJogador.js";
+import { TipoElenco } from "./TipoElenco.js";
 
 export class Jogador {
   constructor(
@@ -13,6 +14,7 @@ export class Jogador {
     private readonly salarioDesejado: number,
     private readonly posicao: PosicaoJogador,
     private readonly status: StatusJogador,
+    private readonly tipoElenco: TipoElenco | null,
     private readonly situacaoFisica: SituacaoFisica,
     private readonly gravidadeLesao: GravidadeLesao | null,
     private readonly diasLesaoRestantes: number,
@@ -43,6 +45,10 @@ export class Jogador {
     return this.status;
   }
 
+  getTipoElenco(): TipoElenco | null {
+    return this.tipoElenco;
+  }
+
   podeSerContratado(): boolean {
     return (
       this.status === StatusJogador.Mercado &&
@@ -64,6 +70,7 @@ export class Jogador {
       salarioDesejado: this.salarioDesejado,
       posicao: this.posicao,
       status: this.status,
+      tipoElenco: this.tipoElenco,
       situacaoFisica: this.situacaoFisica,
       gravidadeLesao: this.gravidadeLesao,
       diasLesaoRestantes: this.diasLesaoRestantes,
