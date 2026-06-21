@@ -23,15 +23,15 @@ export function TelaElenco({ jogadores, onAlterar }: TelaElencoProps) {
   const titulares = jogadores.filter((j) => j.tipoElenco === "TITULAR");
   const reservas = jogadores.filter((j) => j.tipoElenco === "RESERVA");
 
-  const AtacanteTitu = titulares.filter((j) => j.posicao === "Atacante");
-  const DefensorTitu = titulares.filter((j) => j.posicao === "Defensor");
-  const MeiocampoTitu = titulares.filter((j) => j.posicao === "Meio-campo");
-  const GoleiroTitu = titulares.filter((j) => j.posicao === "Goleiro");
+  const AtacanteTitu = titulares.filter((j) => j.posicao === "ATACANTE");
+  const DefensorTitu = titulares.filter((j) => j.posicao === "DEFENSOR");
+  const MeiocampoTitu = titulares.filter((j) => j.posicao === "MEIO_CAMPO");
+  const GoleiroTitu = titulares.filter((j) => j.posicao === "GOLEIRO");
 
-  const Atacante = reservas.filter((j) => j.posicao === "Atacante");
-  const Defensor = reservas.filter((j) => j.posicao === "Defensor");
-  const Meiocampo = reservas.filter((j) => j.posicao === "Meio-campo");
-  const Goleiro = reservas.filter((j) => j.posicao === "Goleiro");
+  const Atacante = reservas.filter((j) => j.posicao === "ATACANTE");
+  const Defensor = reservas.filter((j) => j.posicao === "DEFENSOR");
+  const Meiocampo = reservas.filter((j) => j.posicao === "MEIO_CAMPO");
+  const Goleiro = reservas.filter((j) => j.posicao === "GOLEIRO");
 
   function atualizaTitular() {
     const excessoAta = AtacanteTitu.length - rowlimitAta;

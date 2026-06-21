@@ -41,23 +41,12 @@ export function App() {
     async function load() {
       try {
         const [jogadoresElenco, jogadoresMercado] = await Promise.all([
-          getJogadoresElenco(CLUBE_ID),
+          getJogadoresElenco(),
           getJogadoresMercado(),
         ]);
-
-        // Elenco vem com status ELENCO da API → mapeia para "reserva" no front
-        const elencoMapeado: Jogador[] = jogadoresElenco.map((j: Jogador) => ({
-          ...j,
-          status: "reserva" as StatusUI,
-        }));
-
-        // Mercado já vem com status MERCADO
-        const mercadoMapeado: Jogador[] = jogadoresMercado.map((j: Jogador) => ({
-          ...j,
-          status: "MERCADO" as StatusUI,
-        }));
-
-        setJogadores([...elencoMapeado, ...mercadoMapeado]);
+        console.log("ELENCO:", jogadoresElenco);
+        console.log("MERCADO:", jogadoresMercado);
+        setJogadores([...jogadoresElenco, ...jogadoresMercado]);
       } catch (error) {
         console.error("Erro ao carregar jogadores:", error);
       } finally {

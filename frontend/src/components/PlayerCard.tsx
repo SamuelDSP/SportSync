@@ -29,12 +29,16 @@ export function PlayerCard({
         <p>Position: {jogador.posicao}</p>
 
         {tipo === 1 && (
-          <button
-            onClick={() => onAlterar(jogador.id, "DEMITIDO", 0)}
-            className="botao"
-          >
-            Demitir
-          </button>
+          <>
+          <p>{jogador.salarioAtual}</p>
+          <p>{jogador.valorMercado}</p>
+            <button
+              onClick={() => onAlterar(jogador.id, "DEMITIDO", 0)}
+              className="botao"
+            >
+              Demitir
+            </button>
+          </>
         )}
 
         {tipo === 2 && (

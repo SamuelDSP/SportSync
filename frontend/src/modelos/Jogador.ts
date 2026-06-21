@@ -2,6 +2,7 @@
 export type StatusUI = "ELENCO" | "MERCADO"|"DEMITIDO";
 
 export type TipoElenco = "TITULAR" | "RESERVA";
+
  
 export interface Jogador {
   id: number;

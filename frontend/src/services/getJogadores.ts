@@ -1,4 +1,5 @@
 import { API_URL } from "./api";
+import { clubeID } from "./api";
  
 export async function getJogadoresMercado() {
   const response = await fetch(`${API_URL}/financeiro/jogadores/mercado`);
@@ -10,9 +11,9 @@ export async function getJogadoresMercado() {
   return response.json();
 }
  
-export async function getJogadoresElenco(clubeId: number) {
+export async function getJogadoresElenco() {
   const response = await fetch(
-    `${API_URL}/financeiro/clubes/${clubeId}/elenco`,
+    `${API_URL}/financeiro/clubes/${clubeID}/elenco`,
   );
  
   if (!response.ok) {

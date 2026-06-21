@@ -31,16 +31,16 @@ export function TelaMercado({ jogadores, onAlterar }: TelaJogadoresProps) {
  );
 
   const Atacante = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Atacante"
+    (j) => j.posicao === "ATACANTE"
   );
   const Defensor = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Defensor"
+    (j) => j.posicao === "DEFENSOR"
   );
   const Meiocampo = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Meio-campo"
+    (j) => j.posicao === "MEIO_CAMPO"
   );
   const Goleiro = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Goleiro"
+    (j) => j.posicao === "GOLEIRO"
   );
   return (
     <>
