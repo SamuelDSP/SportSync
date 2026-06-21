@@ -12,7 +12,7 @@ import { getJogadoresElenco, getJogadoresMercado } from "./services/getJogadores
 import "./estilos/App.css";
 import { demitirJogador, contratarJogador } from "./services/alterarStatus.ts";
 
-const CLUBE_ID = 2;
+export const CLUBE_ID = 2;
 
 export function App() {
   const [abaAtual, setAbaAtual] = useState("");
@@ -70,7 +70,6 @@ export function App() {
     );
 
     if (novotipoElenco === "TITULAR" ) {
-      const qtdTitulares = titulares.length;
 
       if (titulares.length >= 11) {
         alert("Já existem 11 titulares!");
@@ -92,7 +91,7 @@ export function App() {
     if (novoStatus==="ELENCO" || novotipoElenco === "RESERVA") {
       if (player.status === "MERCADO") {
         try {
-          await contratarJogador(1, id, 1000);
+          await contratarJogador(id, 1000);
           setJogadores((jogadores) =>
             jogadores.map((jogador) =>
               jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
@@ -121,7 +120,7 @@ export function App() {
 
     if (novoStatus === "MERCADO") {
       try {
-        await demitirJogador(CLUBE_ID, id);
+        await demitirJogador(id);
         setJogadores((prev) =>
           prev.map((j) => (j.id === id ? { ...j, status: novoStatus } : j)),
         );
@@ -138,7 +137,7 @@ export function App() {
     if (!modalJogador || !pendente) return;
 
     try {
-      await contratarJogador(CLUBE_ID, modalJogador.id, salarioAceito);
+      await contratarJogador(modalJogador.id, salarioAceito);
       setJogadores((prev) =>
         prev.map((j) =>
           j.id === modalJogador.id
