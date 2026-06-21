@@ -27,6 +27,7 @@ export function App() {
   const [pendente, setPendente] = useState<{
     novoStatus: StatusUI;
     rowlimit: number;
+    novotipoElenco?: TipoElenco;
   } | null>(null);
 
   useEffect(() => {
@@ -134,7 +135,7 @@ export function App() {
       setJogadores((prev) =>
         prev.map((j) =>
           j.id === modalJogador.id
-            ? { ...j, status: pendente.novoStatus, salarioAtual: salarioAceito }
+            ? { ...j, status: pendente.novoStatus, salarioAtual: salarioAceito, tipoElenco: pendente.novotipoElenco }
             : j,
         ),
       );
