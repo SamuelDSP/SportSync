@@ -5,6 +5,7 @@ import { Jogador } from "../src/modelos/Jogador.js";
 import { PosicaoJogador } from "../src/modelos/PosicaoJogador.js";
 import { SituacaoFisica } from "../src/modelos/SituacaoFisica.js";
 import { StatusJogador } from "../src/modelos/StatusJogador.js";
+import { TipoElenco } from "../src/modelos/TipoElenco.js";
 import type { FinanceiroRepositorio } from "../src/repositorio/FinanceiroRepositorio.js";
 import { FinanceiroService } from "../src/servicos/FinanceiroService.js";
 
@@ -18,6 +19,7 @@ function criarJogadorMercado() {
     2000,
     PosicaoJogador.MeioCampo,
     StatusJogador.Mercado,
+    null,
     SituacaoFisica.Disponivel,
     null,
     0,
@@ -62,6 +64,7 @@ test("contratacao valida orcamento e persiste quando as regras passam", async ()
     2000,
     PosicaoJogador.MeioCampo,
     StatusJogador.Elenco,
+    TipoElenco.Reserva,
     SituacaoFisica.Disponivel,
     null,
     0,

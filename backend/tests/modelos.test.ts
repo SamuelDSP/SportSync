@@ -26,6 +26,7 @@ test("jogador lesionado nao pode ser contratado e gravidade define dias", () => 
     5000,
     PosicaoJogador.Atacante,
     StatusJogador.Mercado,
+    null,
     SituacaoFisica.Lesionado,
     GravidadeLesao.Grave,
     60,
