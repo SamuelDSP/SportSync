@@ -94,7 +94,7 @@ export function App() {
       if (player.status === "MERCADO") {
         try {
           setModalJogador(player);
-          setPendente({ novoStatus, rowlimit });
+          setPendente({ novoStatus, rowlimit, novotipoElenco });
           
           return;
         } catch (error) {
