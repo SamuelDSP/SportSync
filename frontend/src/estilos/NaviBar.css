@@ -20,35 +20,54 @@
   width: 200px;
 }
 
+/* ── Topo ── */
+.sidebar-topo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0 8px;
+}
+
+/* ── Centro (fica no meio vertical) ── */
+.sidebar-centro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0 8px;
+}
+
+/* ── Rodapé ── */
+.sidebar-rodape {
+  width: 100%;
+  padding: 0 8px;
+}
+
 /* Toggle */
 .sidebar-toggle {
   background: none;
   border: none;
   color: antiquewhite;
   cursor: pointer;
-  padding: 8px;
+  padding: 12px;
   border-radius: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  width: 100%;
 }
 
 .sidebar-toggle:hover {
   background-color: rgb(2, 50, 52);
 }
 
-/* Itens */
-.sidebar-itens {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  padding: 0 8px;
-}
-
+/* Botões */
 .sidebar-btn {
   background: none;
   border: none;
@@ -58,12 +77,17 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
   font-size: 0.95rem;
   font-family: 'Inter', sans-serif;
   white-space: nowrap;
   transition: background 0.2s;
+}
+
+.sidebar--aberta .sidebar-btn {
+  justify-content: flex-start;
 }
 
 .sidebar-btn:hover {
@@ -81,8 +105,6 @@
 
 /* Sair */
 .sidebar-btn--sair {
-  margin: 0 8px 8px;
-  width: calc(100% - 16px);
   color: #ff6b6b;
 }
 
@@ -93,10 +115,8 @@
 /* ── MOBILE ── */
 @media (max-width: 640px) {
   .sidebar {
-    right: unset;
-    top: unset;
     bottom: 0;
-    left: 0;
+    top: unset;
     width: 100%;
     height: 60px;
     flex-direction: row;
@@ -111,25 +131,24 @@
     height: 60px;
   }
 
-  .sidebar-toggle {
-    margin-bottom: 0;
-  }
-
-  .sidebar-itens {
+  .sidebar-topo,
+  .sidebar-centro,
+  .sidebar-rodape {
     flex-direction: row;
-    gap: 4px;
+    flex: unset;
     padding: 0;
+    gap: 4px;
     align-items: center;
     justify-content: center;
   }
 
-  .sidebar-btn span {
-    display: none;
+  .sidebar-toggle {
+    margin-bottom: 0;
+    width: auto;
   }
 
-  .sidebar-btn--sair {
-    margin: 0;
-    width: auto;
+  .sidebar-btn span {
+    display: none;
   }
 
   .sidebar-overlay {
@@ -137,7 +156,7 @@
   }
 }
 
-/* Overlay mobile */
+/* Overlay */
 .sidebar-overlay {
   position: fixed;
   inset: 0;

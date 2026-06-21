@@ -21,7 +21,7 @@ export function App() {
   const [abaAtual, setAbaAtual] = useState("");
   const [jogadores, setJogadores] = useState<Jogador[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [sidebarAberta, setSidebarAberta] = useState(false);
   // Estado do modal de contratação
   const [modalJogador, setModalJogador] = useState<Jogador|null>();
   const [pendente, setPendente] = useState<{
@@ -159,8 +159,12 @@ export function App() {
   return (
     <>
       {abaAtual !== "" && (
-        <NaviBar abaAtual={abaAtual} setAbaAtual={setAbaAtual} />
-      )}
+      <NaviBar
+      abaAtual={abaAtual}
+      setAbaAtual={setAbaAtual}
+      onToggle={setSidebarAberta}  // prop nova
+        />
+  )}
 
       {/* Modal de contratação (renderiza acima de tudo quando aberto) */}
       {modalJogador && (
@@ -171,17 +175,17 @@ export function App() {
         />
       )}
 
-      <main className="telas">
+      <main className={`telas${sidebarAberta ? " telas--sidebar-aberta" : ""}`}>
         {abaAtual === "" && <TelaInicial setAbaAtual={setAbaAtual} />}
         {abaAtual === "jogadores" && (
           <TelaMercado jogadores={jogadores} onAlterar={onAlterar} />
         )}
         {abaAtual === "times" && <TelaTimes />}
-        {abaAtual === "financeiro" && <TelaFinanceiro clubeId={CLUBE_ID} />}
-        {abaAtual === "elenco" && (
-          <TelaElenco jogadores={jogadores} onAlterar={onAlterar} />
-        )}
-      </main>
+      {abaAtual === "financeiro" && <TelaFinanceiro clubeId={CLUBE_ID} />}
+      {abaAtual === "elenco" && (
+    <TelaElenco jogadores={jogadores} onAlterar={onAlterar} />
+  )}
+</main>
     </>
   );
 }

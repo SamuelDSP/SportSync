@@ -1,11 +1,33 @@
-h1{
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    background-color: antiquewhite;
+h1 {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-.telas{
-    flex: 1;
-    overflow-y: auto;
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.telas {
+  flex: 1;
+  margin-left: 60px; /* largura da sidebar fechada */
+  overflow-y: auto;
+  min-width: 0;
+  transition: margin-left 0.25s ease;
+}
+
+.telas--sidebar-aberta {
+  margin-left: 200px; /* largura da sidebar aberta */
+}
+
+@media (max-width: 640px) {
+  .telas {
+    margin-left: 0;
+    margin-bottom: 60px; /* sidebar vai para baixo no mobile */
+  }
+
+  .telas--sidebar-aberta {
+    margin-left: 0;
+  }
 }

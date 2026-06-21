@@ -1,49 +1,63 @@
 import { useState } from "react";
-import { Menu, X, Sword, Users, DollarSign, List, Home, LogOut } from "lucide-react";
+import { Menu, X, Store, Users, DollarSign, Shield, Home, LogOut } from "lucide-react";
 import "../estilos/NaviBar.css";
 
 interface NavbarProps {
   abaAtual: string;
   setAbaAtual: (aba: string) => void;
+  onToggle?: (aberta: boolean) => void;
 }
 
 const abas = [
-  { id: "jogadores", label: "Jogadores", icon: Sword },
-  { id: "times",     label: "Times",     icon: Users },
-  { id: "financeiro",label: "Financeiro",icon: DollarSign },
-  { id: "elenco",    label: "Elenco",    icon: List },
+  { id: "jogadores",  label: "Jogadores",  icon: Store      },
+  { id: "times",      label: "Times",      icon: Shield     },
+  { id: "financeiro", label: "Financeiro", icon: DollarSign },
+  { id: "elenco",     label: "Elenco",     icon: Users      },
 ];
 
-export function NaviBar({ abaAtual, setAbaAtual }: NavbarProps) {
+export function NaviBar({ abaAtual, setAbaAtual, onToggle }: NavbarProps) {
   const [aberta, setAberta] = useState(false);
+
+  function toggleSidebar() {
+    const novoEstado = !aberta;
+    setAberta(novoEstado);
+    onToggle?.(novoEstado);
+  }
+
+  function navegarPara(aba: string) {
+    setAbaAtual(aba);
+    setAberta(false);
+    onToggle?.(false);
+  }
 
   return (
     <>
-      {/* Overlay escuro no mobile quando aberta */}
-      {aberta && <div className="sidebar-overlay" onClick={() => setAberta(false)} />}
+      {aberta && <div className="sidebar-overlay" onClick={toggleSidebar} />}
 
       <nav className={`sidebar ${aberta ? "sidebar--aberta" : ""}`}>
-        {/* Botão toggle */}
-        <button className="sidebar-toggle" onClick={() => setAberta(!aberta)}>
-          {aberta ? <X size={22} /> : <Menu size={22} />}
-        </button>
 
-        {/* Itens de navegação */}
-        <div className="sidebar-itens">
+        {/* ── Topo: menu + home ── */}
+        <div className="sidebar-topo">
+          <button className="sidebar-toggle" onClick={toggleSidebar}>
+            {aberta ? <X size={22} /> : <Menu size={22} />}
+          </button>
           <button
             className={`sidebar-btn ${abaAtual === "" ? "sidebar-btn--ativo" : ""}`}
-            onClick={() => { setAbaAtual(""); setAberta(false); }}
+            onClick={() => navegarPara("")}
             title="Home"
           >
             <Home size={20} />
             {aberta && <span>Home</span>}
           </button>
+        </div>
 
+        {/* ── Centro: abas principais ── */}
+        <div className="sidebar-centro">
           {abas.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               className={`sidebar-btn ${abaAtual === id ? "sidebar-btn--ativo" : ""}`}
-              onClick={() => { setAbaAtual(id); setAberta(false); }}
+              onClick={() => navegarPara(id)}
               title={label}
             >
               <Icon size={20} />
@@ -52,11 +66,14 @@ export function NaviBar({ abaAtual, setAbaAtual }: NavbarProps) {
           ))}
         </div>
 
-        {/* Botão sair */}
-        <button className="sidebar-btn sidebar-btn--sair" title="Sair da conta">
-          <LogOut size={20} />
-          {aberta && <span>Sair da conta</span>}
-        </button>
+        {/* ── Rodapé: sair ── */}
+        <div className="sidebar-rodape">
+          <button className="sidebar-btn sidebar-btn--sair" title="Sair da conta">
+            <LogOut size={20} />
+            {aberta && <span>Sair da conta</span>}
+          </button>
+        </div>
+
       </nav>
     </>
   );

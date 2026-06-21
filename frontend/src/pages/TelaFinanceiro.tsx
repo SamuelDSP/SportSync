@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { getResumoClube } from "../services/financeiro";
+import { getResumoClube, listarTransacoes } from "../services/financeiro";
 import type { ResumoClube } from "../modelos/financeiro";
-
 
 interface TelaFinanceiroProps {
   clubeId: number;
@@ -11,201 +10,464 @@ function formatBRL(valor: number) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+// ── Gráfico de rosca SVG ──────────────────────────────────────────────────────
+function GraficoRosca({ receitas, despesas }: { receitas: number; despesas: number }) {
+  const total = receitas + despesas || 1;
+  const pctReceitas = receitas / total;
+  const r = 54;
+  const circunferencia = 2 * Math.PI * r;
+  const dashReceitas = pctReceitas * circunferencia;
+  const dashDespesas = circunferencia - dashReceitas;
+
+  return (
+    <div style={s.roscaWrap}>
+      <svg width={140} height={140} viewBox="0 0 140 140">
+        <circle cx={70} cy={70} r={r} fill="none" stroke="#e2e8f0" strokeWidth={16} />
+        <circle
+          cx={70} cy={70} r={r}
+          fill="none"
+          stroke="#00c774"
+          strokeWidth={16}
+          strokeDasharray={`${dashReceitas} ${dashDespesas}`}
+          strokeDashoffset={circunferencia * 0.25}
+          strokeLinecap="round"
+          style={{ transition: "stroke-dasharray 0.6s ease" }}
+        />
+        <circle
+          cx={70} cy={70} r={r}
+          fill="none"
+          stroke="#f87171"
+          strokeWidth={16}
+          strokeDasharray={`${dashDespesas} ${dashReceitas}`}
+          strokeDashoffset={circunferencia * 0.25 - dashReceitas}
+          strokeLinecap="round"
+          style={{ transition: "stroke-dasharray 0.6s ease" }}
+        />
+        <text x={70} y={65} textAnchor="middle" fontSize={11} fill="#64748b" fontWeight={500}>
+          Receitas
+        </text>
+        <text x={70} y={82} textAnchor="middle" fontSize={13} fill="#0f172a" fontWeight={700}>
+          {Math.round(pctReceitas * 100)}%
+        </text>
+      </svg>
+      <div style={s.roscaLegenda}>
+        <span style={{ ...s.dot, background: "#00c774" }} /> Receitas
+        <span style={{ ...s.dot, background: "#f87171", marginLeft: 12 }} /> Despesas
+      </div>
+    </div>
+  );
+}
+
+// ── Lista de transações ───────────────────────────────────────────────────────
+function ListaTransacoes() {
+  const [transacoes, setTransacoes] = useState<any[]>([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    listarTransacoes()
+      .then(setTransacoes)
+      .catch(() => setTransacoes([]))
+      .finally(() => setCarregando(false));
+  }, []);
+
+  if (carregando) return <p style={s.muted}>Carregando transações…</p>;
+  if (transacoes.length === 0)
+    return <p style={s.muted}>Nenhuma transação registrada.</p>;
+
+  return (
+    <div style={s.transacoesLista}>
+      {transacoes.slice(0, 8).map((t: any, i: number) => {
+        const isEntrada = t.tipo === "receita" || t.valor > 0;
+        return (
+          <div key={i} style={s.transacaoItem}>
+            <div style={{ ...s.transacaoDot, background: isEntrada ? "#00c774" : "#f87171" }} />
+            <div style={{ flex: 1 }}>
+              <p style={s.transacaoDesc}>{t.descricao ?? t.tipo ?? "Transação"}</p>
+              <p style={s.transacaoData}>
+                {t.data ? new Date(t.data).toLocaleDateString("pt-BR") : "—"}
+              </p>
+            </div>
+            <span style={{ ...s.transacaoValor, color: isEntrada ? "#00c774" : "#f87171" }}>
+              {isEntrada ? "+" : ""}{formatBRL(Math.abs(t.valor ?? 0))}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Tela principal ────────────────────────────────────────────────────────────
 export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
   const [resumo, setResumo] = useState<ResumoClube | null>(null);
   const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
-    async function load() {
-      try {
-        const data = await getResumoClube(clubeId);
-        setResumo(data);
-      } catch (error) {
-        console.error(error);
-        setErro("Não foi possível carregar os dados financeiros.");
-      }
-    }
-    load();
+    getResumoClube(clubeId)
+      .then(setResumo)
+      .catch(() => setErro("Não foi possível carregar os dados financeiros."));
   }, [clubeId]);
 
-
   if (erro) return <p style={{ padding: "2rem", color: "#dc2626" }}>{erro}</p>;
-  if (!resumo) return <p style={{ padding: "2rem" }}>Carregando...</p>;
+  if (!resumo) return <p style={{ padding: "2rem", color: "#64748b" }}>Carregando…</p>;
 
   const { clube } = resumo;
   const usoLimite = clube.limiteDespesaMensal > 0
     ? (clube.despesaMensalAtual / clube.limiteDespesaMensal) * 100
     : 0;
+  const corBarra = usoLimite >= 90 ? "#f87171" : usoLimite >= 70 ? "#f59e0b" : "#00c774";
+  const saldoPositivo = clube.saldo >= 0;
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.titulo}>Financeiro</h1>
-      <p style={styles.nomeClube}>{clube.nome}</p>
-
-      {/* Cards principais */}
-      <div style={styles.grid}>
-        <Card label="Saldo atual" valor={formatBRL(clube.saldo)} destaque />
-        <Card label="Receitas" valor={formatBRL(resumo.receitas)} cor="#16a34a" />
-        <Card label="Despesas" valor={formatBRL(resumo.despesas)} cor="#dc2626" />
-        <Card label="Transações" valor={String(resumo.quantidadeTransacoes)} />
+    <div style={s.page}>
+      {/* ── Cabeçalho ── */}
+      <div style={s.header}>
+        <div>
+          <h1 style={s.titulo}>Financeiro</h1>
+        </div>
+        <span style={s.badge}>Visão Geral</span>
       </div>
 
-      {/* Limite mensal */}
-      <div style={styles.secao}>
-        <h2 style={styles.subtitulo}>Limite de despesa mensal</h2>
-        <div style={styles.limiteRow}>
-          <span style={styles.limiteValor}>{formatBRL(clube.despesaMensalAtual)}</span>
-          <span style={styles.limiteSep}>/</span>
-          <span style={styles.limiteMax}>{formatBRL(clube.limiteDespesaMensal)}</span>
-        </div>
-        <div style={styles.barraFundo}>
-          <div
-            style={{
-              ...styles.barraPreenchimento,
-              width: `${Math.min(usoLimite, 100)}%`,
-              background: usoLimite >= 90 ? "#dc2626" : usoLimite >= 70 ? "#f59e0b" : "#16a34a",
-            }}
-          />
-        </div>
-        <p style={styles.margemTexto}>
-          Margem disponível:{" "}
-          <strong>{formatBRL(clube.margemDespesaMensal)}</strong>
-        </p>
+      <div style={s.divider} />
+
+      {/* ── KPI Cards ── */}
+      <div style={s.gridKpi}>
+        <KpiCard
+          label="Saldo Atual"
+          valor={formatBRL(clube.saldo)}
+          cor={saldoPositivo ? "#00c774" : "#f87171"}
+          accent
+        />
+        <KpiCard label="Receitas" valor={formatBRL(resumo.receitas)} cor="#00c774" icon="↑" />
+        <KpiCard label="Despesas" valor={formatBRL(resumo.despesas)} cor="#f87171" icon="↓" />
+        <KpiCard label="Transações" valor={String(resumo.quantidadeTransacoes)} cor="#1e3a5f" />
       </div>
 
-      {/* Conferência */}
-      <div style={styles.secao}>
-        <h2 style={styles.subtitulo}>Conferência</h2>
-        <p style={styles.infoTexto}>
-          Saldo calculado por transações:{" "}
-          <strong>{formatBRL(resumo.saldoCalculadoPorTransacoes)}</strong>
-        </p>
-        {resumo.saldoCalculadoPorTransacoes !== clube.saldo && (
-          <p style={{ color: "#f59e0b", fontSize: "0.85rem" }}>
-            ⚠️ Divergência entre saldo registrado e calculado por transações.
-          </p>
-        )}
+      {/* ── Gráfico + Cards secundários ── */}
+      <div style={s.gridSecundario}>
+        <div style={s.card}>
+          <p style={s.cardTitulo}>Receitas vs Despesas</p>
+          <GraficoRosca receitas={resumo.receitas} despesas={resumo.despesas} />
+          <div style={s.roscaValores}>
+            <div>
+              <p style={s.roscaLabel}>Receitas</p>
+              <p style={{ ...s.roscaNum, color: "#00c774" }}>{formatBRL(resumo.receitas)}</p>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <p style={s.roscaLabel}>Despesas</p>
+              <p style={{ ...s.roscaNum, color: "#f87171" }}>{formatBRL(resumo.despesas)}</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div style={s.card}>
+            <p style={s.cardTitulo}>Limite de Despesa Mensal</p>
+            <div style={s.limiteRow}>
+              <span style={s.limiteValorAtual}>{formatBRL(clube.despesaMensalAtual)}</span>
+              <span style={s.limiteSep}>/</span>
+              <span style={s.limiteMax}>{formatBRL(clube.limiteDespesaMensal)}</span>
+            </div>
+            <div style={s.barraFundo}>
+              <div
+                style={{
+                  ...s.barraFill,
+                  width: `${Math.min(usoLimite, 100)}%`,
+                  background: corBarra,
+                }}
+              />
+            </div>
+            <div style={s.limiteFooter}>
+              <span style={s.muted}>Uso: {usoLimite.toFixed(1)}%</span>
+              <span style={{ ...s.muted, color: corBarra }}>
+                Margem: {formatBRL(clube.margemDespesaMensal)}
+              </span>
+            </div>
+          </div>
+
+          <div style={s.card}>
+            <p style={s.cardTitulo}>Conferência de Saldo</p>
+            <div style={s.conferRow}>
+              <div>
+                <p style={s.muted}>Saldo registrado</p>
+                <p style={s.confVal}>{formatBRL(clube.saldo)}</p>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <p style={s.muted}>Calculado por transações</p>
+                <p style={s.confVal}>{formatBRL(resumo.saldoCalculadoPorTransacoes)}</p>
+              </div>
+            </div>
+            {resumo.saldoCalculadoPorTransacoes !== clube.saldo ? (
+              <div style={s.alertaWrap}>
+                <span style={s.alertaIcon}>⚠️</span>
+                <span style={s.alertaTexto}>
+                  Divergência detectada entre saldo registrado e calculado.
+                </span>
+              </div>
+            ) : (
+              <div style={{ ...s.alertaWrap, background: "#f0fdf4", borderColor: "#bbf7d0" }}>
+                <span style={s.alertaIcon}>✅</span>
+                <span style={{ ...s.alertaTexto, color: "#166534" }}>
+                  Saldo conferido e consistente.
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Transações recentes ── */}
+      <div style={{ ...s.card, marginTop: "1rem" }}>
+        <p style={s.cardTitulo}>Transações Recentes</p>
+        <ListaTransacoes />
       </div>
     </div>
   );
 }
 
-// Sub-componente de card
-function Card({
-  label,
-  valor,
-  destaque,
-  cor,
+// ── KPI Card ──────────────────────────────────────────────────────────────────
+function KpiCard({
+  label, valor, cor, accent, icon,
 }: {
-  label: string;
-  valor: string;
-  destaque?: boolean;
-  cor?: string;
+  label: string; valor: string; cor: string; accent?: boolean; icon?: string;
 }) {
   return (
-    <div style={{ ...styles.card, ...(destaque ? styles.cardDestaque : {}) }}>
-      <p style={styles.cardLabel}>{label}</p>
-      <p style={{ ...styles.cardValor, color: cor ?? (destaque ? "#fff" : "#0f172a") }}>
-        {valor}
-      </p>
+    <div style={{ ...s.kpiCard, ...(accent ? { borderTop: `3px solid ${cor}` } : {}) }}>
+      <div style={s.kpiTop}>
+        <span style={s.kpiLabel}>{label}</span>
+        {icon && <span style={{ fontSize: "1rem", color: cor }}>{icon}</span>}
+      </div>
+      <p style={{ ...s.kpiValor, color: cor }}>{valor}</p>
     </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  container: {
+// ── Styles ────────────────────────────────────────────────────────────────────
+const s: Record<string, React.CSSProperties> = {
+  page: {
+    background: "#ffffff",
+    minHeight: "100vh",
     padding: "2rem",
-    maxWidth: "700px",
-    margin: "0 auto",
-    fontFamily: "inherit",
+    boxSizing: "border-box",
+    width: "100%",
+    overflowX: "hidden",
+    fontFamily: "'Inter', 'Segoe UI', sans-serif", // já existe, mantém
+  },
+  header: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: "0.75rem",
   },
   titulo: {
-    fontSize: "1.75rem",
-    fontWeight: 700,
+    fontSize: "2.75rem",   // era 1.65rem, +10 no título como pedido
+    fontWeight: 800,
     color: "#0f172a",
     margin: 0,
+    letterSpacing: "-0.02em",
+    fontFamily: "'Inter', 'Segoe UI', sans-serif",
   },
   nomeClube: {
-    fontSize: "1rem",
-    color: "#64748b",
-    marginTop: "0.25rem",
-    marginBottom: "1.5rem",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-    gap: "1rem",
-    marginBottom: "2rem",
-  },
-  card: {
-    background: "#f8fafc",
-    border: "1.5px solid #e2e8f0",
-    borderRadius: "12px",
-    padding: "1rem 1.25rem",
-  },
-  cardDestaque: {
-    background: "#0f172a",
-    border: "none",
-  },
-  cardLabel: {
-    fontSize: "0.75rem",
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
+    fontSize: "0.875rem",
     color: "#94a3b8",
-    margin: "0 0 0.4rem",
+    margin: "0.2rem 0 0",
+    fontWeight: 500,
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
   },
-  cardValor: {
-    fontSize: "1.2rem",
-    fontWeight: 700,
-    margin: 0,
+  badge: {
+    background: "#f0fdf4",
+    color: "#00c774",
+    border: "1px solid #bbf7d0",
+    borderRadius: "999px",
+    fontSize: "0.95rem",
+    fontWeight: 600,
+    padding: "0.3rem 0.85rem",
+    letterSpacing: "0.04em",
+    whiteSpace: "nowrap",
   },
-  secao: {
+  divider: {
+    height: "1px",
+    background: "#f1f5f9",
     marginBottom: "1.75rem",
   },
-  subtitulo: {
-    fontSize: "1rem",
-    fontWeight: 600,
-    color: "#0f172a",
+  gridKpi: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "1rem",
+    marginBottom: "1.25rem",
+  },
+  kpiCard: {
+    background: "#ffffff",
+    border: "1.5px solid #e2e8f0",
+    borderRadius: "14px",
+    padding: "1.1rem 1.25rem",
+    boxShadow: "0 1px 4px rgba(15,23,42,0.04)",
+    minWidth: 0, // evita overflow nos grids
+  },
+  kpiTop: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: "0.5rem",
   },
+  kpiLabel: {
+    fontSize: "0.92rem",
+    textTransform: "uppercase",
+    letterSpacing: "0.07em",
+    color: "#94a3b8",
+    fontWeight: 600,
+  },
+  kpiValor: {
+    fontSize: "1.55rem",
+    fontWeight: 800,
+    margin: 0,
+    letterSpacing: "-0.01em",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  gridSecundario: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1.6fr",
+    gap: "1rem",
+  },
+  card: {
+    background: "#ffffff",
+    border: "1.5px solid #e2e8f0",
+    borderRadius: "14px",
+    padding: "1.25rem 1.4rem",
+    boxShadow: "0 1px 4px rgba(15,23,42,0.04)",
+    minWidth: 0,
+  },
+  cardTitulo: {
+    fontSize: "1rem",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.07em",
+    color: "#94a3b8",
+    margin: "0 0 1rem",
+  },
+  roscaWrap: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  roscaLegenda: {
+    fontSize: "0.98rem",
+    color: "#64748b",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+  },
+  dot: {
+    display: "inline-block",
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+  },
+  roscaValores: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "1rem",
+    padding: "0.75rem 0 0",
+    borderTop: "1px solid #f1f5f9",
+  },
+  roscaLabel: { fontSize: "0.95rem", color: "#94a3b8", margin: "0 0 0.15rem", fontWeight: 600 },
+  roscaNum: { fontSize: "1.2rem", fontWeight: 700, margin: 0 },
   limiteRow: {
     display: "flex",
     alignItems: "baseline",
-    gap: "0.4rem",
-    marginBottom: "0.5rem",
+    gap: "0.35rem",
+    marginBottom: "0.75rem",
+    flexWrap: "wrap",
   },
-  limiteValor: {
-    fontSize: "1.1rem",
-    fontWeight: 700,
-    color: "#0f172a",
-  },
-  limiteSep: {
-    color: "#94a3b8",
-  },
-  limiteMax: {
-    fontSize: "0.95rem",
-    color: "#64748b",
-  },
+  limiteValorAtual: { fontSize: "1.45rem", fontWeight: 800, color: "#0f172a" },
+  limiteSep: { color: "#cbd5e1", fontSize: "1.3rem" },
+  limiteMax: { fontSize: "1.1rem", color: "#94a3b8", fontWeight: 500 },
   barraFundo: {
-    height: "8px",
+    height: "7px",
     borderRadius: "999px",
-    background: "#e2e8f0",
+    background: "#f1f5f9",
     overflow: "hidden",
     marginBottom: "0.5rem",
   },
-  barraPreenchimento: {
+  barraFill: {
     height: "100%",
     borderRadius: "999px",
-    transition: "width 0.4s ease",
+    transition: "width 0.5s ease",
   },
-  margemTexto: {
-    fontSize: "0.875rem",
-    color: "#475569",
+  limiteFooter: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: "0.98rem",
+    fontWeight: 600,
+    flexWrap: "wrap",
+    gap: "0.25rem",
+  },
+  conferRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "0.75rem",
+    flexWrap: "wrap",
+    gap: "0.5rem",
+  },
+  confVal: {
+    fontSize: "1rem",
+    fontWeight: 700,
+    color: "#0f172a",
+    margin: "0.2rem 0 0",
+  },
+  alertaWrap: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    background: "#fffbeb",
+    border: "1px solid #fde68a",
+    borderRadius: "8px",
+    padding: "0.6rem 0.85rem",
+  },
+  alertaIcon: { fontSize: "1.1rem", flexShrink: 0 },
+  alertaTexto: { fontSize: "1.0rem", color: "#92400e", fontWeight: 500 },
+  transacoesLista: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.1rem",
+  },
+  transacaoItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1.05rem",
+    padding: "0.65rem 0",
+    borderBottom: "1px solid #f8fafc",
+  },
+  transacaoDot: {
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    flexShrink: 0,
+  },
+  transacaoDesc: {
+    fontSize: "1.075rem",
+    fontWeight: 600,
+    color: "#0f172a",
     margin: 0,
   },
-  infoTexto: {
-    fontSize: "0.9rem",
-    color: "#475569",
+  transacaoData: {
+    fontSize: "0.95rem",
+    color: "#94a3b8",
+    margin: "0.1rem 0 0",
+  },
+  transacaoValor: {
+    fontSize: "1.1rem",
+    fontWeight: 700,
+    whiteSpace: "nowrap",
+  },
+  muted: {
+    fontSize: "0.98rem",
+    color: "#94a3b8",
     margin: 0,
+    fontWeight: 500,
   },
 };
