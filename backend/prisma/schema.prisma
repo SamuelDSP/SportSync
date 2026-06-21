@@ -91,3 +91,22 @@ model TransacaoFinanceira {
   clube   Clube?   @relation(fields: [clubeId], references: [id])
   jogador Jogador? @relation(fields: [jogadorId], references: [id])
 }
+
+model JogadorCsvStaging {
+  id              Int      @id @default(autoincrement())
+  playerId        Int      @unique // player_id do CSV — evita duplicar em reimportações
+  shortName       String
+  longName        String
+  playerPositions String   // "ST, LW" — texto cru, sem mapear pra enum ainda
+  age             Int?
+  overall         Int?
+  potential       Int?
+  valueEur        Float?
+  wageEur         Float?
+  clubTeamId      Int?
+  clubName        String?
+  leagueName      String?
+  processado      Boolean  @default(false) // marca se já foi transformado pra Jogador
+  importadoEm     DateTime @default(now())
+}
+

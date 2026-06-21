@@ -1,0 +1,12 @@
+# dependências
+node_modules/
+
+# build
+dist/
+build/
+
+# logs
+*.log
+
+# Prisma migrations (se você realmente quiser ignorar)
+backend/prisma/migrations/
