@@ -8,5 +8,5 @@ build/
 # logs
 *.log
 
-# Prisma migrations (se você realmente quiser ignorar)
+# Prisma migrations
 backend/prisma/migrations/
