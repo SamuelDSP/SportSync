@@ -1,6 +1,6 @@
-export type StatusUI = "titular" |"MERCADO" |"reserva"|"lesionado"
+export type StatusUI = "ELENCO" |"MERCADO";
 
-export type StatusAPI = "MERCADO"|"ELENCO"|"DEMITIDO"
+export type TipoElenco = "TITULAR" | "RESERVA";
 
 
 
@@ -11,4 +11,5 @@ export interface Jogador {
     valorMercado: number;
     posicao: string;
     status: StatusUI;
+    tipoElenco?: TipoElenco;
 }

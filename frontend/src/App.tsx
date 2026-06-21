@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { NaviBar } from "./components/NaviBar.tsx";
 import { TelaElenco } from "./pages/TelaElenco.tsx";
 import { TelaInicial } from "./pages/TelaInicial.tsx";
-import type { Jogador } from "./modelos/Jogador.ts";
+import type { Jogador, TipoElenco } from "./modelos/Jogador.ts";
 import type { StatusUI } from "./modelos/Jogador.ts";
 import {
   getJogadoresElenco,
@@ -60,15 +60,15 @@ export function App() {
 
   */
 
-  async function onAlterar(id: number, novoStatus: StatusUI, rowlimit: number) {
+  async function onAlterar(id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco?: TipoElenco) {
     const player = jogadores.find((p) => p.id === id);
     if (!player) return;
 
     const titulares = jogadores.filter(
-      (jogador) => jogador.status === "titular",
+      (jogador) => jogador.tipoElenco === "TITULAR",
     );
 
-    if (novoStatus === "titular") {
+    if (novotipoElenco === "TITULAR" ) {
       const qtdTitulares = titulares.length;
 
       if (qtdTitulares >= 11) {
@@ -105,7 +105,7 @@ export function App() {
       );
     }
 
-    if (novoStatus === "reserva") {
+    if (novoStatus==="ELENCO" && novotipoElenco === "RESERVA") {
       if (player.status === "MERCADO") {
         try {
           await contratarJogador(1, id);
@@ -124,6 +124,7 @@ export function App() {
             jogador.id === id ? { ...jogador, status: novoStatus } : jogador,
           ),
         );
+        //torna titular
       }
     }
 

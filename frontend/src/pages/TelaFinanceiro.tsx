@@ -3,22 +3,9 @@ import { getResumoClube } from "../services/financeiro";
 import type { ResumoClube } from "../modelos/financeiro";
 
 export function TelaFinanceiro() {
-  const [resumo, setResumo] = useState<ResumoClube>({
-    clube: {
-      id: 1,
-      nome: "Clube Teste",
-      saldo: 1000000,
-      limiteDespesaMensal: 500000,
-      despesaMensalAtual: 200000,
-      margemDespesaMensal: 300000,
-    },
-    receitas: 800000,
-    despesas: 300000,
-    saldoCalculadoPorTransacoes: 500000,
-    quantidadeTransacoes: 12,
-  });
+  const [resumo, setResumo] = useState<ResumoClube>();
 
-  /*useEffect(() => {
+  useEffect(() => {
     async function load() {
       try {
         const data = await getResumoClube(1);
@@ -29,7 +16,7 @@ export function TelaFinanceiro() {
     }
 
     load();
-  }, []);*/
+  }, []);
 
   if (!resumo) return <p>Carregando...</p>;
 

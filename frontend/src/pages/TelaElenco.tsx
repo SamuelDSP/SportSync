@@ -8,9 +8,11 @@ import { PlayerCardColumn } from "../components/PlayerCardColumn.tsx";
 import "../estilos/Campo.css";
 import { useState, useEffect } from "react";
 
+import type { TipoElenco } from "../modelos/Jogador.ts";
+
 interface TelaElencoProps {
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
 }
 
 export function TelaElenco({ jogadores, onAlterar }: TelaElencoProps) {
@@ -18,8 +20,8 @@ export function TelaElenco({ jogadores, onAlterar }: TelaElencoProps) {
   const [rowlimitAta, setRowlimitAta] = useState(3);
   const [rowlimitMei, setRowlimitMei] = useState(3);
 
-  const titulares = jogadores.filter((j) => j.status === "titular");
-  const reservas = jogadores.filter((j) => j.status === "reserva");
+  const titulares = jogadores.filter((j) => j.tipoElenco === "TITULAR");
+  const reservas = jogadores.filter((j) => j.tipoElenco === "RESERVA");
 
   const AtacanteTitu = titulares.filter((j) => j.posicao === "Atacante");
   const DefensorTitu = titulares.filter((j) => j.posicao === "Defensor");
@@ -37,13 +39,13 @@ export function TelaElenco({ jogadores, onAlterar }: TelaElencoProps) {
     const excessoMei = MeiocampoTitu.length - rowlimitMei;
 
     for (let i = 0; i < excessoAta; i++) {
-      onAlterar(AtacanteTitu[i].id, "reserva", 0);
+      onAlterar(AtacanteTitu[i].id, "ELENCO", 0, "RESERVA");
     }
     for (let i = 0; i < excessoDef; i++) {
-      onAlterar(DefensorTitu[i].id, "reserva", 0);
+      onAlterar(DefensorTitu[i].id, "ELENCO", 0, "RESERVA");
     }
     for (let i = 0; i < excessoMei; i++) {
-      onAlterar(MeiocampoTitu[i].id, "reserva", 0);
+      onAlterar(MeiocampoTitu[i].id, "ELENCO", 0, "RESERVA");
     }
   }
 

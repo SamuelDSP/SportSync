@@ -2,11 +2,12 @@ import { PlayerCard } from "./PlayerCard";
 import "../estilos/PlayerCardRow.css";
 
 import type { Jogador } from "../modelos/Jogador.ts";
-import type { Status } from "../modelos/Jogador.ts";
+import type { StatusUI } from "../modelos/Jogador.ts";
+import type { TipoElenco } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: Status, rowlimit: number) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
   tipo: number;
   rowlimit: number;
 }

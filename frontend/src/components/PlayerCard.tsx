@@ -3,11 +3,12 @@ import "../estilos/PlayerCard.css";
 import type { Jogador } from "../modelos/Jogador.ts";
 import type { StatusUI } from "../modelos/Jogador.ts";
 import machucadoImg from "../assets/machucado.png";
+import type { TipoElenco } from "../modelos/Jogador.ts";
 
 interface PlayerCardProps {
   jogador: Jogador;
   tipo: number;
-  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
   rowlimit: number;
 }
 
@@ -32,7 +33,7 @@ export function PlayerCard({
 
         {tipo === 1 && (
           <button
-            onClick={() => onAlterar(jogador.id, "MERCADO", 0)}
+            onClick={() => onAlterar(jogador.id, "MERCADO", 0, )}
             className="botao"
           >
             Demitir
@@ -43,7 +44,7 @@ export function PlayerCard({
           <>
             <br />
             <button
-              onClick={() => onAlterar(jogador.id, "reserva", 0)}
+              onClick={() => onAlterar(jogador.id, "ELENCO", 0, "RESERVA")}
               className="botao"
             >
               Colocar no banco

@@ -1,13 +1,14 @@
 import { PlayerCard } from "./PlayerCard";
 import "../estilos/PlayerCardColumn.css";
 import type { Jogador } from "../modelos/Jogador.ts";
-import type { Status } from "../modelos/Jogador.ts";
+import type { StatusUI } from "../modelos/Jogador.ts";
+import type { TipoElenco } from "../modelos/Jogador.ts";
 
 interface PlayerCardColumnProps {
   title: string;
   tipo: number;
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: Status, rowlimit: number) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
   rowlimit: number;
 }
 
