@@ -7,6 +7,7 @@ const port = process.env["PORT"] ?? 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/financeiro", financeiroRotas);
 
 app.get("/", (req, res) => {
     res.send("SportSync API funcionando");
