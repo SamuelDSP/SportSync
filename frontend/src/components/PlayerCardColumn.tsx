@@ -8,7 +8,7 @@ interface PlayerCardColumnProps {
   title: string;
   tipo: number;
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco?: TipoElenco) => void;
   rowlimit: number;
 }
 

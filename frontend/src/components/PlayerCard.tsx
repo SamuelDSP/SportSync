@@ -8,7 +8,7 @@ import type { TipoElenco } from "../modelos/Jogador.ts";
 interface PlayerCardProps {
   jogador: Jogador;
   tipo: number;
-  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco?: TipoElenco) => void;
   rowlimit: number;
 }
 
@@ -21,9 +21,6 @@ export function PlayerCard({
   return (
     <>
       <div className="player-card">
-        {jogador.status === "lesionado" && (
-          <img className="lesionado" src={machucadoImg} alt="machucado" />
-        )}
         <h2>{jogador.nome}</h2>
         {(tipo === 1 || tipo === 4) && <p>Age: {jogador.idade}</p>}
         {(tipo === 1 || tipo === 4) && (
@@ -33,7 +30,7 @@ export function PlayerCard({
 
         {tipo === 1 && (
           <button
-            onClick={() => onAlterar(jogador.id, "MERCADO", 0, )}
+            onClick={() => onAlterar(jogador.id, "DEMITIDO", 0)}
             className="botao"
           >
             Demitir
@@ -56,7 +53,7 @@ export function PlayerCard({
           <>
             <br />
             <button
-              onClick={() => onAlterar(jogador.id, "titular", rowlimit)}
+              onClick={() => onAlterar(jogador.id, "ELENCO", rowlimit, "TITULAR")}
               className="botao"
             >
               Colocar de titular
@@ -66,7 +63,7 @@ export function PlayerCard({
 
         {tipo === 4 && (
           <button
-            onClick={() => onAlterar(jogador.id, "reserva", 0)}
+            onClick={() => onAlterar(jogador.id, "ELENCO", 0, "TITULAR")}
             className="botao"
           >
             Contratar

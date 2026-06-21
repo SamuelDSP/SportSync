@@ -7,7 +7,7 @@ import type { TipoElenco } from "../modelos/Jogador.ts";
 
 interface PlayerCardRowProps {
   jogadores: Jogador[];
-  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco: TipoElenco) => void;
+  onAlterar: (id: number, novoStatus: StatusUI, rowlimit: number, novotipoElenco?: TipoElenco) => void;
   tipo: number;
   rowlimit: number;
 }
