@@ -10,7 +10,7 @@ export interface Jogador {
   valorMercado: number;
   posicao: string;
   status: StatusUI;
-  tipoElenco: TipoElenco;
+  tipoElenco?: TipoElenco;
  
   // Campos vindos do backend (opcionais pra não quebrar dados mock)
   salarioMinimo?: number;

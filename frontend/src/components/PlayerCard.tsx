@@ -41,7 +41,7 @@ export function PlayerCard({
           <>
             <br />
             <button
-              onClick={() => onAlterar(jogador.id, "ELENCO", 0, "RESERVA")}
+              onClick={() => onAlterar(jogador.id,"ELENCO", 0, "RESERVA")}
               className="botao"
             >
               Colocar no banco
@@ -63,7 +63,7 @@ export function PlayerCard({
 
         {tipo === 4 && (
           <button
-            onClick={() => onAlterar(jogador.id, "ELENCO", 0, "TITULAR")}
+            onClick={() => onAlterar(jogador.id, "ELENCO", 0, "RESERVA")}
             className="botao"
           >
             Contratar

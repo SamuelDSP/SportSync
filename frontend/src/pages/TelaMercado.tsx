@@ -17,23 +17,30 @@ export function TelaMercado({ jogadores, onAlterar }: TelaJogadoresProps) {
 
   const [busca, setBusca] = useState("");
 
-  const jogadoresFiltrados = jogadores.filter((jogador) =>
+  const jogadoresMercado = jogadores.filter(
+    (j) => j.status === "MERCADO"
+  );
+
+  const jogadoresFiltrados = jogadoresMercado.filter((jogador) =>
     jogador.nome.toLowerCase().includes(busca.toLowerCase()),
   );
 
-  const jogadoresVisiveis = jogadoresFiltrados.slice(0, quantidadeVisivel);
+  const jogadoresVisiveis = jogadoresFiltrados.slice(
+    0,
+    quantidadeVisivel
+ );
 
   const Atacante = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Atacante" && j.status === "MERCADO",
+    (j) => j.posicao === "Atacante"
   );
   const Defensor = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Defensor" && j.status === "MERCADO",
+    (j) => j.posicao === "Defensor"
   );
   const Meiocampo = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Meio-campo" && j.status === "MERCADO",
+    (j) => j.posicao === "Meio-campo"
   );
   const Goleiro = jogadoresVisiveis.filter(
-    (j) => j.posicao === "Goleiro" && j.status === "MERCADO",
+    (j) => j.posicao === "Goleiro"
   );
   return (
     <>
