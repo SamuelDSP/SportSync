@@ -1,3 +1,3 @@
-export const API_URL = "https://sportsync-p9dk.onrender.com";
+export const API_URL = import.meta.env.VITE_API_URL;
 
 export const clubeID = 2;
