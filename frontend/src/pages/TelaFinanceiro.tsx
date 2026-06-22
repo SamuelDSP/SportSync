@@ -77,7 +77,7 @@ function ListaTransacoes() {
   return (
     <div style={s.transacoesLista}>
       {transacoes.slice(0, 8).map((t: any, i: number) => {
-        const isEntrada = t.tipo === "receita" || t.valor > 0;
+        const isEntrada = t.tipo === "RECEITA";
         return (
           <div key={i} style={s.transacaoItem}>
             <div style={{ ...s.transacaoDot, background: isEntrada ? "#00c774" : "#f87171" }} />
@@ -88,7 +88,7 @@ function ListaTransacoes() {
               </p>
             </div>
             <span style={{ ...s.transacaoValor, color: isEntrada ? "#00c774" : "#f87171" }}>
-              {isEntrada ? "+" : ""}{formatBRL(Math.abs(t.valor ?? 0))}
+              {isEntrada ? "+" : "-"}{formatBRL(Math.abs(t.valor ?? 0))}
             </span>
           </div>
         );

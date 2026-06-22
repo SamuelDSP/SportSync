@@ -200,8 +200,8 @@ export class FinanceiroRepositorio {
           clubeId,
           jogadorId,
           descricao: `Demissao de ${jogadorDemitido.nome}`,
-          valor: 0,
-          tipo: TipoTransacao.Despesa,
+          valor: jogadorDemitido.salarioAtual ?? 0,
+          tipo: TipoTransacao.Receita,
           categoria: "DEMISSAO",
         },
       });
