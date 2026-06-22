@@ -72,11 +72,11 @@ function JogadorCard({
         background: PosicaoBg[jogador.posicao] ?? "#f1f5f9",
         color: PosicaoCor[jogador.posicao] ?? "#64748b",
       }}>
-        {IconePosicao[jogador.posicao]} {PosicaoLabel[jogador.posicao] ?? jogador.posicao}
+         {PosicaoLabel[jogador.posicao] ?? jogador.posicao}
       </span>
 
       <div style={c.cardInfoRow}>
-        <span style={c.cardInfoLabel}>💰</span>
+        <span style={c.cardInfoLabel}>Preço</span>
         <span style={c.cardInfoValor}>{formatValor(jogador.valorMercado)}</span>
       </div>
 

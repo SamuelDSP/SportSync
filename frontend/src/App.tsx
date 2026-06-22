@@ -1,5 +1,5 @@
 import { TelaMercado } from "./pages/TelaMercado.tsx";
-import { TelaTimes } from "./pages/TelaTimes.tsx";
+import { TelaDepMed } from "./pages/TelaDepMed";
 import { TelaFinanceiro } from "./pages/TelaFinanceiro.tsx";
 import { useState, useEffect } from "react";
 import { NaviBar } from "./components/NaviBar.tsx";
@@ -180,7 +180,7 @@ export function App() {
         {abaAtual === "jogadores" && (
           <TelaMercado jogadores={jogadores} onAlterar={onAlterar} />
         )}
-        {abaAtual === "times" && <TelaTimes />}
+        {abaAtual === "times" && <TelaDepMed />}
       {abaAtual === "financeiro" && <TelaFinanceiro clubeId={CLUBE_ID} />}
       {abaAtual === "elenco" && (
     <TelaElenco jogadores={jogadores} onAlterar={onAlterar} />

@@ -209,7 +209,7 @@ const e: Record<string, React.CSSProperties> = {
     gap: "1rem",
   },
   titulo: {
-    fontSize: "2rem",
+    fontSize: "2.75rem",
     fontWeight: 800,
     color: "#0f172a",
     margin: 0,
