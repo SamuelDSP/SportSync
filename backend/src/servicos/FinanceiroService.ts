@@ -101,7 +101,7 @@ export class FinanceiroService {
       clube,
       receitas,
       despesas,
-      saldoCalculadoPorTransacoes: clube.getSaldo() - despesas,
+      saldoCalculadoPorTransacoes: receitas - despesas,
       quantidadeTransacoes: transacoes.length,
     };
   }
