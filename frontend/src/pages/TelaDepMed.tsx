@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getElencoClube, registrarLesao, recuperarJogador } from "../services/financeiro";
 import { CLUBE_ID } from "../App";
 
+type Gravidade = "LEVE" | "MODERADA" | "GRAVE";
+
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 interface Jogador {
   id: number;
@@ -124,19 +126,33 @@ function CardJogador({
         </div>
 
         {/* Botão de ação */}
-        <button
-          onClick={() => onToggle(jogador)}
-          disabled={carregando}
-          style={{
-            ...s.btn,
-            background: lesionado ? "#f0fdf4" : "#fff1f2",
-            color: lesionado ? "#00c774" : "#f87171",
-            border: `1.5px solid ${lesionado ? "#bbf7d0" : "#fecaca"}`,
-            cursor: carregando ? "not-allowed" : "pointer",
-          }}
-        >
-          {lesionado ? "✓ Recuperar" : "⚠ Lesionar"}
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
+          {!lesionado && (
+            <select
+              value={gravidade}
+              onChange={(e) => setGravidade(e.target.value as Gravidade)}
+              disabled={carregando}
+              style={s.selectGravidade}
+            >
+              {GRAVIDADES.map((g) => (
+                <option key={g.valor} value={g.valor}>{g.label}</option>
+              ))}
+            </select>
+          )}
+          <button
+            onClick={() => onToggle(jogador, gravidade)}
+            disabled={carregando}
+            style={{
+              ...s.btn,
+              background: lesionado ? "#f0fdf4" : "#fff1f2",
+              color: lesionado ? "#00c774" : "#f87171",
+              border: `1.5px solid ${lesionado ? "#bbf7d0" : "#fecaca"}`,
+              cursor: carregando ? "not-allowed" : "pointer",
+            }}
+          >
+            {lesionado ? "✓ Recuperar" : "⚠ Lesionar"}
+          </button>
+        </div>
       </div>
 
       {/* Barra de status */}
@@ -170,13 +186,13 @@ export function TelaDepMed() {
       .finally(() => setCarregando(false));
   }, []);
 
-  async function handleToggle(jogador: Jogador) {
+  async function handleToggle(jogador: Jogador, gravidade: Gravidade) {
     setLoadingId(jogador.id);
     try {
       if (jogador.lesionado) {
         await recuperarJogador(jogador.id);
       } else {
-        await registrarLesao(jogador.id);
+        await registrarLesao(jogador.id, gravidade);
       }
       // Atualiza estado local sem re-fetch
       setJogadores((prev) =>
@@ -509,6 +525,18 @@ const s: Record<string, React.CSSProperties> = {
     color: "#94a3b8",
     fontWeight: 500,
     margin: 0,
+  },
+  selectGravidade: {
+    borderRadius: "8px",
+    padding: "0.4rem 0.6rem",
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    border: "1.5px solid #e2e8f0",
+    background: "#f8fafc",
+    color: "#0f172a",
+    cursor: "pointer",
+    fontFamily: "'Inter', 'Segoe UI', sans-serif",
+    outline: "none",
   },
   toast: {
     position: "fixed",

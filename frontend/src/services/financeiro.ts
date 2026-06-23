@@ -35,11 +35,11 @@ export async function deletarTransacao(id: number): Promise<void> {
   if (!response.ok) throw new Error("Erro ao deletar transação");
 }
 
-export async function registrarLesao(jogadorId: number): Promise<void> {
+export async function registrarLesao(jogadorId: number, gravidade: string): Promise<void> {
   const response = await fetch(`${API_URL}/financeiro/jogadores/${jogadorId}/lesao`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jogadorId }),
+    body: JSON.stringify({ gravidade }),
   });
   if (!response.ok) throw new Error("Erro ao registrar lesão");
 }
