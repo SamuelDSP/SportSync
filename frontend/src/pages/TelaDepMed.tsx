@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getElencoClube, registrarLesao, recuperarJogador } from "../services/financeiro";
 import { CLUBE_ID } from "../App";
+import { GravidadeLesao } from "../modelos/GravidadeLesao";
 
 type Gravidade = "LEVE" | "MODERADA" | "GRAVE";
 
@@ -175,6 +176,11 @@ export function TelaDepMed() {
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<"todos" | "saudaveis" | "lesionados">("todos");
+  const mapaGravidade: Record<Gravidade, GravidadeLesao> = {
+  LEVE: GravidadeLesao.Leve,
+  MODERADA: GravidadeLesao.Moderada,
+  GRAVE: GravidadeLesao.Grave,
+};
 
   useEffect(() => {
     getElencoClube(CLUBE_ID)
@@ -189,7 +195,7 @@ async function handleToggle(jogador: Jogador, gravidade: Gravidade) {
     if (jogador.lesionado) {
       await recuperarJogador(jogador.id);
     } else {
-      await registrarLesao(jogador.id, gravidade);
+      await registrarLesao(jogador.id, mapaGravidade[gravidade]); // ← corrigido
     }
     // ✅ Atualiza lesionado e situacaoFisica juntos
     setJogadores((prev) =>
