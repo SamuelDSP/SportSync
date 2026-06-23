@@ -183,27 +183,33 @@ export function TelaDepMed() {
       .finally(() => setCarregando(false));
   }, []);
 
-  async function handleToggle(jogador: Jogador, gravidade: Gravidade) {
-    setLoadingId(jogador.id);
-    try {
-      if (jogador.lesionado) {
-        await recuperarJogador(jogador.id);
-      } else {
-        await registrarLesao(jogador.id, gravidade);
-      }
-      // Atualiza estado local sem re-fetch
-      setJogadores((prev) =>
-        prev.map((j) =>
-          j.id === jogador.id ? { ...j, lesionado: !j.lesionado } : j
-        )
-      );
-    } catch {
-      setErro(`Erro ao atualizar status de ${jogador.nome}. Verifica o console.`);
-      setTimeout(() => setErro(null), 4000);
-    } finally {
-      setLoadingId(null);
+async function handleToggle(jogador: Jogador, gravidade: Gravidade) {
+  setLoadingId(jogador.id);
+  try {
+    if (jogador.lesionado) {
+      await recuperarJogador(jogador.id);
+    } else {
+      await registrarLesao(jogador.id, gravidade);
     }
+    // ✅ Atualiza lesionado e situacaoFisica juntos
+    setJogadores((prev) =>
+      prev.map((j) =>
+        j.id === jogador.id
+          ? {
+              ...j,
+              lesionado: !j.lesionado,
+              situacaoFisica: j.lesionado ? "DISPONIVEL" : "LESIONADO",
+            }
+          : j
+      )
+    );
+  } catch {
+    setErro(`Erro ao atualizar status de ${jogador.nome}. Verifica o console.`);
+    setTimeout(() => setErro(null), 4000);
+  } finally {
+    setLoadingId(null);
   }
+}
 
   const lesionados = jogadores.filter((j) => j.lesionado);
   const saudaveis = jogadores.filter((j) => !j.lesionado);

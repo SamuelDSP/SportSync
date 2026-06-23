@@ -53,10 +53,15 @@ export async function recuperarJogador(jogadorId: number): Promise<void> {
   if (!response.ok) throw new Error("Erro ao recuperar jogador");
 }
 
+// ✅ Mapeia situacaoFisica → lesionado
 export async function getElencoClube(clubeId: number): Promise<any[]> {
   const response = await fetch(`${API_URL}/financeiro/clubes/${clubeId}/elenco`);
   if (!response.ok) throw new Error("Erro ao buscar elenco");
-  return response.json();
+  const dados = await response.json();
+  return dados.map((j: any) => ({
+    ...j,
+    lesionado: j.situacaoFisica === "LESIONADO",
+  }));
 }
 
 export async function getMercado(): Promise<any[]> {
