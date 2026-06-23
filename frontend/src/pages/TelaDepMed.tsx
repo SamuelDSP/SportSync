@@ -3,13 +3,13 @@ import { getElencoClube, registrarLesao, recuperarJogador } from "../services/fi
 import { CLUBE_ID } from "../App";
 import { GravidadeLesao } from "../modelos/GravidadeLesao";
 
+type Gravidade = "LEVE" | "MODERADA" | "GRAVE";
+
 const mapaGravidade: Record<Gravidade, GravidadeLesao> = {
   LEVE: GravidadeLesao.Leve,
   MODERADA: GravidadeLesao.Moderada,
   GRAVE: GravidadeLesao.Grave,
 };
-
-type Gravidade = "LEVE" | "MODERADA" | "GRAVE";
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 interface Jogador {
