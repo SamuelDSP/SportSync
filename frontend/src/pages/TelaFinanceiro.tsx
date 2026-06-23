@@ -121,17 +121,23 @@ function ModalAdicionarReceita({ clubeId, onFechar, onSucesso }: {
 }
 
 // ── Lista de transações ───────────────────────────────────────────────────────
-function ListaTransacoes({ refresh }: { refresh: number }) {
+function ListaTransacoes({
+  clubeId,
+  refresh,
+}: {
+  clubeId: number;
+  refresh: number;
+}) {
   const [transacoes, setTransacoes] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     setCarregando(true);
-    listarTransacoes()
+    listarTransacoes(clubeId)
       .then(setTransacoes)
       .catch(() => setTransacoes([]))
       .finally(() => setCarregando(false));
-  }, [refresh]);
+  }, [clubeId, refresh]);
 
   if (carregando) return <p style={s.muted}>Carregando transações…</p>;
   if (transacoes.length === 0) return <p style={s.muted}>Nenhuma transação registrada.</p>;
@@ -280,7 +286,7 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
       {/* ── Transações recentes ── */}
       <div style={{ ...s.card, marginTop: "1rem" }}>
         <p style={s.cardTitulo}>Transações Recentes</p>
-        <ListaTransacoes refresh={refreshTransacoes} />
+        <ListaTransacoes clubeId={clubeId} refresh={refreshTransacoes} />
       </div>
     </div>
   );

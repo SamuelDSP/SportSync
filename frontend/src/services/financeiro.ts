@@ -7,8 +7,9 @@ export async function getResumoClube(clubeId: number): Promise<ResumoClube> {
   return response.json();
 }
 
-export async function listarTransacoes(): Promise<any[]> {
-  const response = await fetch(`${API_URL}/financeiro/transacoes`);
+export async function listarTransacoes(clubeId?: number): Promise<any[]> {
+  const query = clubeId ? `?clubeId=${clubeId}` : "";
+  const response = await fetch(`${API_URL}/financeiro/transacoes${query}`);
   if (!response.ok) throw new Error("Erro ao listar transações");
   return response.json();
 }
