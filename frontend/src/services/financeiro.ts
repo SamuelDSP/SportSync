@@ -39,15 +39,16 @@ export async function registrarLesao(jogadorId: number): Promise<void> {
   const response = await fetch(`${API_URL}/financeiro/jogadores/${jogadorId}/lesao`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ jogadorId }),
   });
   if (!response.ok) throw new Error("Erro ao registrar lesão");
 }
+
 export async function recuperarJogador(jogadorId: number): Promise<void> {
   const response = await fetch(`${API_URL}/financeiro/jogadores/${jogadorId}/recuperar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ jogadorId }),
   });
   if (!response.ok) throw new Error("Erro ao recuperar jogador");
 }
