@@ -75,16 +75,23 @@ function KpiCard({
 }
 
 // ── Card de jogador ───────────────────────────────────────────────────────────
+const GRAVIDADES: { valor: Gravidade; label: string }[] = [
+  { valor: "LEVE", label: "Leve" },
+  { valor: "MODERADA", label: "Moderada" },
+  { valor: "GRAVE", label: "Grave" },
+];
+
 function CardJogador({
   jogador,
   onToggle,
   carregando,
 }: {
   jogador: Jogador;
-  onToggle: (j: Jogador) => void;
+  onToggle: (j: Jogador, gravidade: Gravidade) => void; // ✅ corrigido
   carregando: boolean;
 }) {
   const lesionado = jogador.lesionado;
+  const [gravidade, setGravidade] = useState<Gravidade>("LEVE"); // ✅ declarado aqui
 
   return (
     <div
@@ -95,7 +102,6 @@ function CardJogador({
         transition: "opacity 0.2s",
       }}
     >
-      {/* Avatar + info */}
       <div style={s.cardTop}>
         <div
           style={{
@@ -110,9 +116,7 @@ function CardJogador({
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={s.cardNomeRow}>
             <p style={s.cardNome}>{jogador.nome}</p>
-            {lesionado && (
-              <span style={s.tagLesionado}>🩹 Lesionado</span>
-            )}
+            {lesionado && <span style={s.tagLesionado}>🩹 Lesionado</span>}
           </div>
           <div style={s.cardMeta}>
             <BadgePosicao posicao={jogador.posicao} />
@@ -125,7 +129,6 @@ function CardJogador({
           </div>
         </div>
 
-        {/* Botão de ação */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
           {!lesionado && (
             <select
@@ -140,7 +143,7 @@ function CardJogador({
             </select>
           )}
           <button
-            onClick={() => onToggle(jogador, gravidade)}
+            onClick={() => onToggle(jogador, gravidade)} // ✅ passa gravidade
             disabled={carregando}
             style={{
               ...s.btn,
@@ -155,14 +158,8 @@ function CardJogador({
         </div>
       </div>
 
-      {/* Barra de status */}
       <div style={s.statusBar}>
-        <span
-          style={{
-            ...s.statusDot,
-            background: lesionado ? "#f87171" : "#00c774",
-          }}
-        />
+        <span style={{ ...s.statusDot, background: lesionado ? "#f87171" : "#00c774" }} />
         <span style={{ ...s.statusTexto, color: lesionado ? "#f87171" : "#00c774" }}>
           {lesionado ? "Fora de combate" : "Disponível"}
         </span>
