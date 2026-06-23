@@ -3,6 +3,12 @@ import { getElencoClube, registrarLesao, recuperarJogador } from "../services/fi
 import { CLUBE_ID } from "../App";
 import { GravidadeLesao } from "../modelos/GravidadeLesao";
 
+const mapaGravidade: Record<Gravidade, GravidadeLesao> = {
+  LEVE: GravidadeLesao.Leve,
+  MODERADA: GravidadeLesao.Moderada,
+  GRAVE: GravidadeLesao.Grave,
+};
+
 type Gravidade = "LEVE" | "MODERADA" | "GRAVE";
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
@@ -176,11 +182,6 @@ export function TelaDepMed() {
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<"todos" | "saudaveis" | "lesionados">("todos");
-  const mapaGravidade: Record<Gravidade, GravidadeLesao> = {
-  LEVE: GravidadeLesao.Leve,
-  MODERADA: GravidadeLesao.Moderada,
-  GRAVE: GravidadeLesao.Grave,
-};
 
   useEffect(() => {
     getElencoClube(CLUBE_ID)
