@@ -228,7 +228,7 @@ export function TelaMercado({ jogadores, onAlterar }: TelaMercadoProps) {
                   onClick={() => { setPosicao(p); setQuantidadeVisivel(20); }}
                   style={{
                     ...c.posicaoBtn,
-                    background: ativo ? (p !== "TODOS" ? PosicaoBg[p] : "#0f172a") : "#f8fafc",
+                    background: ativo ? (p !== "TODOS" ? bg : "#0f172a") : "#f8fafc",
                     color: ativo ? (p !== "TODOS" ? cor : "#ffffff") : "#64748b",
                     border: ativo
                       ? `1.5px solid ${p !== "TODOS" ? cor : "#0f172a"}`
