@@ -15,6 +15,7 @@ type NovaTransacaoDTO = {
   tipo: TipoTransacao;
   categoria: string | null;
   data: string | undefined;
+  clubeId?: number;
 };
 
 type NovoClubeDTO = {
@@ -64,7 +65,7 @@ export class FinanceiroService {
             dados.data ? new Date(dados.data) : new Date(),
           );
 
-    return this.repositorio.criar(transacao);
+    return this.repositorio.criar(transacao, dados.clubeId);
   }
 
   async removerTransacao(id: number): Promise<void> {
