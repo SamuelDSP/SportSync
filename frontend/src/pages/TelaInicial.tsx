@@ -1,5 +1,5 @@
 import "../estilos/tela-inicial.css";
-import logo from './assets/logo.png'
+import logo from '../assets/logo.png'
 
 interface TelaInicialProps {
   setAbaAtual: (aba: string) => void;
