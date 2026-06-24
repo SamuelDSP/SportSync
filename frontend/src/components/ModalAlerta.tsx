@@ -73,6 +73,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "0.95rem",
     color: "#475569",
     margin: 0,
+    fontFamily: '"Inter", sans-serif',
   },
   botoes: {
     display: "flex",
@@ -87,5 +88,6 @@ const styles: Record<string, CSSProperties> = {
     color: "#fff",
     cursor: "pointer",
     fontWeight: 600,
+    fontFamily: '"Inter", sans-serif',
   },
 };
