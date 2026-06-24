@@ -256,30 +256,6 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
             </div>
           </div>
 
-          <div style={s.card}>
-            <p style={s.cardTitulo}>Conferência de Saldo</p>
-            <div style={s.conferRow}>
-              <div>
-                <p style={s.muted}>Saldo registrado</p>
-                <p style={s.confVal}>{formatBRL(clube.saldo)}</p>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <p style={s.muted}>Calculado por transações</p>
-                <p style={s.confVal}>{formatBRL(resumo.saldoCalculadoPorTransacoes)}</p>
-              </div>
-            </div>
-            {resumo.saldoCalculadoPorTransacoes !== clube.saldo ? (
-              <div style={s.alertaWrap}>
-                <span style={s.alertaIcon}>⚠️</span>
-                <span style={s.alertaTexto}>Divergência detectada entre saldo registrado e calculado.</span>
-              </div>
-            ) : (
-              <div style={{ ...s.alertaWrap, background: "#f0fdf4", borderColor: "#bbf7d0" }}>
-                <span style={s.alertaIcon}>✅</span>
-                <span style={{ ...s.alertaTexto, color: "#166534" }}>Saldo conferido e consistente.</span>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
