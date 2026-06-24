@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 interface ModalAlertaProps {
   titulo?: string;
   mensagem: string;
-  tipo?: "info" | "Alerta" | "sucesso" | "alerta";
+  tipo?: "info" | "erro" | "sucesso" | "alerta";
   textoBotao?: string;
   onFechar: () => void;
 }
@@ -16,7 +16,7 @@ export function ModalAlerta({
   onFechar,
 }: ModalAlertaProps) {
   const corTitulo =
-    tipo === "Alerta"
+    tipo === "erro"
       ? "#dc2626"
       : tipo === "sucesso"
       ? "#16a34a"
