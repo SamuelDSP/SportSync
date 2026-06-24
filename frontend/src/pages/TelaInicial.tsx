@@ -1,4 +1,5 @@
 import "../estilos/tela-inicial.css";
+import logo from './assets/logo.png'
 
 interface TelaInicialProps {
   setAbaAtual: (aba: string) => void;
@@ -15,7 +16,7 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
           Software de gestão esportiva
         </p>
         <h1 className="hero-title fade-up delay-2">
-          <img src="/logo.png" alt="logo" className="hero-logo" />
+          <img src={logo} alt="logo" className="hero-logo" />
           SPORTSYNC
         </h1>
         <p className="hero-sub fade-up delay-3">
