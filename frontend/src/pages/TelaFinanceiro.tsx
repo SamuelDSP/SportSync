@@ -218,8 +218,8 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
       <div style={s.gridKpi}>
         <KpiCard label="Saldo Atual" valor={formatBRL(clube.saldo)} cor={saldoPositivo ? "#00c774" : "#f87171"} accent />
         <KpiCard label="Receitas" valor={formatBRL(resumo.receitas)} cor="#00c774" icon="↑" />
-        <KpiCard label="Despesas" valor={formatBRL(resumo.despesas)} cor="#f87171" icon="↓" />
-        <KpiCard label="Transações" valor={String(resumo.quantidadeTransacoes)} cor="#1e3a5f" />
+        <KpiCard label="Despesas/Contratações $" valor={formatBRL(resumo.despesas)} cor="#f87171" icon="↓" />
+        <KpiCard label="Qtd Transações" valor={String(resumo.quantidadeTransacoes)} cor="#1e3a5f" />
       </div>
 
       {/* ── Gráfico + Cards secundários ── */}
@@ -241,7 +241,7 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={s.card}>
-            <p style={s.cardTitulo}>Limite de Despesa Mensal</p>
+            <p style={s.cardTitulo}>Folha Salarial</p>
             <div style={s.limiteRow}>
               <span style={s.limiteValorAtual}>{formatBRL(clube.despesaMensalAtual)}</span>
               <span style={s.limiteSep}>/</span>
