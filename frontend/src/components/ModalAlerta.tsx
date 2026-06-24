@@ -17,7 +17,7 @@ export function ModalAlerta({
 }: ModalAlertaProps) {
   const corTitulo =
     tipo === "erro"
-      ? "#dc2626"
+      ? "#e4e725"
       : tipo === "sucesso"
       ? "#16a34a"
       : tipo === "alerta"

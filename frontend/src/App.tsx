@@ -189,7 +189,7 @@ export function App() {
       {modalAlerta && (
         <ModalAlerta
           tipo="erro"
-          titulo="Erro"
+          titulo="Atenção!"
           mensagem={mensagemAlerta}
           onFechar={() => setModalAlerta(false)}
         />
