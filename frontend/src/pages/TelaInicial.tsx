@@ -1,18 +1,22 @@
-import '../estilos/tela-inicial.css'
+import "../estilos/tela-inicial.css";
 
 interface TelaInicialProps {
-  setAbaAtual: (aba: string) => void
+  setAbaAtual: (aba: string) => void;
 }
 
 export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
   return (
     <>
       <section className="hero">
-        <p className="hero-eyebrow fade-up delay-1" style={{ alignSelf: 'flex-start' }}>
-          Software de gestão esportiva</p>
+        <p
+          className="hero-eyebrow fade-up delay-1"
+          style={{ alignSelf: "flex-start" }}
+        >
+          Software de gestão esportiva
+        </p>
         <h1 className="hero-title fade-up delay-2">
-          <img src="/src/assets/logo.png" alt="logo" className="hero-logo" />
-            SPORTSYNC
+          <img src="/logo.png" alt="logo" className="hero-logo" />
+          SPORTSYNC
         </h1>
         <p className="hero-sub fade-up delay-3">
           Controle jogadores, times, elenco e finanças em um único lugar.
@@ -24,34 +28,44 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
         <p className="modulos-label fade-up">O que você quer gerenciar?</p>
 
         <div className="modulos-grid fade-up delay-1">
-          <button className="modulo-card" onClick={() => setAbaAtual('jogadores')}>
+          <button
+            className="modulo-card"
+            onClick={() => setAbaAtual("jogadores")}
+          >
             <h2 className="modulo-titulo">Jogadores</h2>
             <p className="modulo-desc">
-              Controle entradas, saídas e contratos. Visibilidade financeira completa para a diretoria.
+              Controle entradas, saídas e contratos. Visibilidade financeira
+              completa para a diretoria.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
 
-          <button className="modulo-card" onClick={() => setAbaAtual('times')}>
+          <button className="modulo-card" onClick={() => setAbaAtual("times")}>
             <h2 className="modulo-titulo">Departamento Médico</h2>
             <p className="modulo-desc">
-              Controle a saúde dos atletas. Acompanhe lesões, tratamentos e disponibilidade para jogos.
+              Controle a saúde dos atletas. Acompanhe lesões, tratamentos e
+              disponibilidade para jogos.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
 
-          <button className="modulo-card" onClick={() => setAbaAtual('financeiro')}>
+          <button
+            className="modulo-card"
+            onClick={() => setAbaAtual("financeiro")}
+          >
             <h2 className="modulo-titulo">Financeiro</h2>
             <p className="modulo-desc">
-              Controle a saúde financeira do clube. Acompanhe entradas, saídas e contratos com facilidade.
+              Controle a saúde financeira do clube. Acompanhe entradas, saídas e
+              contratos com facilidade.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
 
-          <button className="modulo-card" onClick={() => setAbaAtual('elenco')}>
+          <button className="modulo-card" onClick={() => setAbaAtual("elenco")}>
             <h2 className="modulo-titulo">Elenco</h2>
             <p className="modulo-desc">
-              Visualize o plantel completo. Relacione jogadores, posições e disponibilidades com facilidade.
+              Visualize o plantel completo. Relacione jogadores, posições e
+              disponibilidades com facilidade.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
@@ -63,5 +77,5 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
         <p>Projeto POO</p>
       </footer>
     </>
-  )
+  );
 }
