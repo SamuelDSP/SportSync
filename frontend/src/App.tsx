@@ -72,6 +72,10 @@ export function App() {
 
     //colocar titular
     if (novotipoElenco === "TITULAR" && player.status==="ELENCO") {
+      if(player.situacaoFisica === "LESIONADO"){
+        alert("Esse jogador está lesionado!");
+        return;
+      }
       if (titulares.length >= 11) {
         alert("Já existem 11 titulares!");
         return;

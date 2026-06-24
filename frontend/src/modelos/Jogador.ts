@@ -3,6 +3,11 @@ export type StatusUI = "ELENCO" | "MERCADO"|"DEMITIDO";
 
 export type TipoElenco = "TITULAR" | "RESERVA";
 
+
+export type SituacaoFisica = "DISPONIVEL" | "LESIONADO";
+
+
+
  
 export interface Jogador {
   id: number;
@@ -12,6 +17,7 @@ export interface Jogador {
   posicao: string;
   status: StatusUI;
   tipoElenco?: TipoElenco;
+  situacaoFisica: SituacaoFisica 
  
   // Campos vindos do backend (opcionais pra não quebrar dados mock)
   salarioMinimo?: number;
