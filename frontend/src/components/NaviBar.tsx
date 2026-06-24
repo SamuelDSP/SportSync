@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Store, Users, DollarSign, Shield, Home, LogOut } from "lucide-react";
+import { Menu, X, Store, Users, DollarSign, Hospital, Home, LogOut } from "lucide-react";
 import "../estilos/NaviBar.css";
 
 interface NavbarProps {
@@ -10,7 +10,7 @@ interface NavbarProps {
 
 const abas = [
   { id: "jogadores",  label: "Jogadores",  icon: Store      },
-  { id: "times",      label: "Times",      icon: Shield     },
+  { id: "times",  label: "Dep. Médico", icon: Hospital },
   { id: "financeiro", label: "Financeiro", icon: DollarSign },
   { id: "elenco",     label: "Elenco",     icon: Users      },
 ];

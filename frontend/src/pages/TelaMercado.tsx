@@ -32,6 +32,9 @@ const PosicaoLabel: Record<string, string> = {
   GOLEIRO: "Goleiro",
 };
 
+const POSICOES = ["TODOS", "ATACANTE", "MEIO_CAMPO", "DEFENSOR", "GOLEIRO"] as const;
+type FiltroPos = typeof POSICOES[number];
+
 function formatBRL(valor: number) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
@@ -72,11 +75,11 @@ function JogadorCard({
         background: PosicaoBg[jogador.posicao] ?? "#f1f5f9",
         color: PosicaoCor[jogador.posicao] ?? "#64748b",
       }}>
-        {IconePosicao[jogador.posicao]} {PosicaoLabel[jogador.posicao] ?? jogador.posicao}
+         {PosicaoLabel[jogador.posicao] ?? jogador.posicao}
       </span>
 
       <div style={c.cardInfoRow}>
-        <span style={c.cardInfoLabel}>💰</span>
+        <span style={c.cardInfoLabel}>Preço</span>
         <span style={c.cardInfoValor}>{formatValor(jogador.valorMercado)}</span>
       </div>
 
@@ -149,6 +152,7 @@ function MinhasOrdens() {
 export function TelaMercado({ jogadores, onAlterar }: TelaMercadoProps) {
   const [aba, setAba] = useState<Aba>("mercado");
   const [busca, setBusca] = useState("");
+  const [posicao, setPosicao] = useState<FiltroPos>("TODOS");
   const [saldo, setSaldo] = useState<number | null>(null);
   const [quantidadeVisivel, setQuantidadeVisivel] = useState(20);
 
@@ -160,6 +164,7 @@ export function TelaMercado({ jogadores, onAlterar }: TelaMercadoProps) {
 
   useEffect(() => {
     setBusca("");
+    setPosicao("TODOS");
     setQuantidadeVisivel(20);
   }, [aba]);
 
@@ -167,7 +172,9 @@ export function TelaMercado({ jogadores, onAlterar }: TelaMercadoProps) {
   const elenco  = jogadores.filter((j) => j.status === "ELENCO");
 
   const filtrar = (lista: Jogador[]) =>
-    lista.filter((j) => j.nome.toLowerCase().includes(busca.toLowerCase()));
+    lista
+      .filter((j) => j.nome.toLowerCase().includes(busca.toLowerCase()))
+      .filter((j) => posicao === "TODOS" || j.posicao === posicao);
 
   const mercadoFiltrado = filtrar(mercado);
   const elencoFiltrado  = filtrar(elenco);
@@ -202,13 +209,39 @@ export function TelaMercado({ jogadores, onAlterar }: TelaMercadoProps) {
       </div>
 
       {aba !== "ordens" && (
-        <input
-          style={c.busca}
-          type="text"
-          placeholder={aba === "mercado" ? "Buscar jogador no mercado…" : "Buscar no elenco…"}
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-        />
+        <div style={c.filtrosRow}>
+          <input
+            style={c.busca}
+            type="text"
+            placeholder={aba === "mercado" ? "Buscar jogador no mercado…" : "Buscar no elenco…"}
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+          />
+          <div style={c.posicoesBtns}>
+            {POSICOES.map((p) => {
+              const ativo = posicao === p;
+              const bg = p !== "TODOS" ? PosicaoBg[p] : "#f8fafc";
+              const cor = p !== "TODOS" ? PosicaoCor[p] : "#64748b";
+              return (
+                <button
+                  key={p}
+                  onClick={() => { setPosicao(p); setQuantidadeVisivel(20); }}
+                  style={{
+                    ...c.posicaoBtn,
+                    background: ativo ? (p !== "TODOS" ? bg : "#0f172a") : "#f8fafc",
+                    color: ativo ? (p !== "TODOS" ? cor : "#ffffff") : "#64748b",
+                    border: ativo
+                      ? `1.5px solid ${p !== "TODOS" ? cor : "#0f172a"}`
+                      : "1.5px solid #e2e8f0",
+                    fontWeight: ativo ? 700 : 500,
+                  }}
+                >
+                  {p === "TODOS" ? "Todos" : `${IconePosicao[p]} ${PosicaoLabel[p]}`}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       )}
 
       {aba === "mercado" && (
@@ -321,9 +354,16 @@ const c: Record<string, React.CSSProperties> = {
     border: "1.5px solid #0f172a",
     color: "#ffffff",
   },
+  filtrosRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    marginBottom: "1.5rem",
+    flexWrap: "wrap",
+  },
   busca: {
     width: "100%",
-    maxWidth: "380px",
+    maxWidth: "280px",
     padding: "0.6rem 1rem",
     border: "1.5px solid #e2e8f0",
     borderRadius: "999px",
@@ -331,8 +371,21 @@ const c: Record<string, React.CSSProperties> = {
     fontFamily: "'Inter', 'Segoe UI', sans-serif",
     color: "#0f172a",
     outline: "none",
-    marginBottom: "1.5rem",
     boxSizing: "border-box",
+  },
+  posicoesBtns: {
+    display: "flex",
+    gap: "0.4rem",
+    flexWrap: "wrap",
+  },
+  posicaoBtn: {
+    borderRadius: "999px",
+    padding: "0.45rem 0.85rem",
+    fontSize: "0.82rem",
+    cursor: "pointer",
+    fontFamily: "'Inter', 'Segoe UI', sans-serif",
+    transition: "all 0.15s",
+    whiteSpace: "nowrap",
   },
   grid: {
     display: "grid",

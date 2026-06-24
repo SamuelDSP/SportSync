@@ -27,15 +27,15 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
           <button className="modulo-card" onClick={() => setAbaAtual('jogadores')}>
             <h2 className="modulo-titulo">Jogadores</h2>
             <p className="modulo-desc">
-              Cadastre e acompanhe cada atleta do clube. Histórico, posição e dados pessoais centralizados.
+              Controle entradas, saídas e contratos. Visibilidade financeira completa para a diretoria.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
 
           <button className="modulo-card" onClick={() => setAbaAtual('times')}>
-            <h2 className="modulo-titulo">Times</h2>
+            <h2 className="modulo-titulo">Departamento Médico</h2>
             <p className="modulo-desc">
-              Organize as equipes da instituição. Categorias, comissões técnicas e escalações em um clique.
+              Controle a saúde dos atletas. Acompanhe lesões, tratamentos e disponibilidade para jogos.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>
@@ -43,7 +43,7 @@ export function TelaInicial({ setAbaAtual }: TelaInicialProps) {
           <button className="modulo-card" onClick={() => setAbaAtual('financeiro')}>
             <h2 className="modulo-titulo">Financeiro</h2>
             <p className="modulo-desc">
-              Controle entradas, saídas e contratos. Visibilidade financeira completa para a diretoria.
+              Controle a saúde financeira do clube. Acompanhe entradas, saídas e contratos com facilidade.
             </p>
             <span className="modulo-cta">Acessar →</span>
           </button>

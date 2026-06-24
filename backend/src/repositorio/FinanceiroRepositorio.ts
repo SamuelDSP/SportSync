@@ -17,6 +17,7 @@ type RegistroTransacao = {
   valor: number;
   tipo: string;
   categoria: string | null;
+  clubeId: number | null;
   data: Date;
 };
 
@@ -64,13 +65,17 @@ export class FinanceiroRepositorio {
     return registros.map((registro) => this.paraTransacaoDominio(registro));
   }
 
-  async criar(transacao: TransacaoFinanceira): Promise<TransacaoFinanceira> {
+  async criar(
+    transacao: TransacaoFinanceira,
+    clubeId?: number,
+  ): Promise<TransacaoFinanceira> {
     const registro = await this.prisma.transacaoFinanceira.create({
       data: {
         descricao: transacao.getDescricao(),
         valor: transacao.getValor(),
         tipo: transacao.getTipo(),
         categoria: transacao.getCategoria(),
+        ...(clubeId ? { clube: { connect: { id: clubeId } } } : {}),
         data: transacao.getData(),
       },
     });
@@ -200,8 +205,8 @@ export class FinanceiroRepositorio {
           clubeId,
           jogadorId,
           descricao: `Demissao de ${jogadorDemitido.nome}`,
-          valor: 0,
-          tipo: TipoTransacao.Despesa,
+          valor: jogadorDemitido.salarioAtual ?? 0,
+          tipo: TipoTransacao.Receita,
           categoria: "DEMISSAO",
         },
       });

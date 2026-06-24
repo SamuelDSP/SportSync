@@ -10,6 +10,7 @@ type CorpoTransacao = {
   tipo?: string;
   categoria?: string | null;
   data?: string;
+  clubeId?: number;
 };
 
 export class FinanceiroControlador {
@@ -33,13 +34,16 @@ export class FinanceiroControlador {
   criarTransacao = async (req: Request, res: Response) => {
     try {
       const body = req.body as CorpoTransacao;
-      const transacao = await this.financeiroService.criarTransacao({
+      const dadosTransacao = {
         descricao: body.descricao ?? "",
         valor: Number(body.valor),
         tipo: body.tipo as TipoTransacao,
         categoria: body.categoria ?? null,
         data: body.data,
-      });
+        ...(body.clubeId ? { clubeId: Number(body.clubeId) } : {}),
+      };
+      const transacao =
+        await this.financeiroService.criarTransacao(dadosTransacao);
 
       res.status(201).json(transacao);
     } catch (erro) {

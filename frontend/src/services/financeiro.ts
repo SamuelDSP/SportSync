@@ -7,8 +7,9 @@ export async function getResumoClube(clubeId: number): Promise<ResumoClube> {
   return response.json();
 }
 
-export async function listarTransacoes(): Promise<any[]> {
-  const response = await fetch(`${API_URL}/financeiro/transacoes`);
+export async function listarTransacoes(clubeId?: number): Promise<any[]> {
+  const query = clubeId ? `?clubeId=${clubeId}` : "";
+  const response = await fetch(`${API_URL}/financeiro/transacoes${query}`);
   if (!response.ok) throw new Error("Erro ao listar transações");
   return response.json();
 }
@@ -35,10 +36,11 @@ export async function deletarTransacao(id: number): Promise<void> {
   if (!response.ok) throw new Error("Erro ao deletar transação");
 }
 
-export async function registrarLesao(jogadorId: number): Promise<void> {
+export async function registrarLesao(jogadorId: number, gravidade: string): Promise<void> {
   const response = await fetch(`${API_URL}/financeiro/jogadores/${jogadorId}/lesao`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ gravidade }),
   });
   if (!response.ok) throw new Error("Erro ao registrar lesão");
 }
@@ -47,14 +49,20 @@ export async function recuperarJogador(jogadorId: number): Promise<void> {
   const response = await fetch(`${API_URL}/financeiro/jogadores/${jogadorId}/recuperar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jogadorId }),
   });
   if (!response.ok) throw new Error("Erro ao recuperar jogador");
 }
 
+// ✅ Mapeia situacaoFisica → lesionado
 export async function getElencoClube(clubeId: number): Promise<any[]> {
   const response = await fetch(`${API_URL}/financeiro/clubes/${clubeId}/elenco`);
   if (!response.ok) throw new Error("Erro ao buscar elenco");
-  return response.json();
+  const dados = await response.json();
+  return dados.map((j: any) => ({
+    ...j,
+    lesionado: j.situacaoFisica === "LESIONADO",
+  }));
 }
 
 export async function getMercado(): Promise<any[]> {
