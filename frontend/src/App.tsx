@@ -15,6 +15,8 @@ import {
 import "./estilos/App.css";
 import { demitirJogador, contratarJogador } from "./services/alterarStatus.ts";
 
+import { ModalAlerta } from "./components/ModalAlerta.tsx";
+
 export const CLUBE_ID = 2;
 
 export function App() {
@@ -24,6 +26,8 @@ export function App() {
   const [sidebarAberta, setSidebarAberta] = useState(false);
   // Estado do modal de contratação
   const [modalJogador, setModalJogador] = useState<Jogador|null>();
+  const [modalAlerta, setModalAlerta] = useState(false);
+  const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [pendente, setPendente] = useState<{
     novoStatus: StatusUI;
     rowlimit: number;
@@ -73,17 +77,20 @@ export function App() {
     //colocar titular
     if (novotipoElenco === "TITULAR" && player.status==="ELENCO") {
       if(player.situacaoFisica === "LESIONADO"){
-        alert("Esse jogador está lesionado!");
+        setMensagemAlerta("Esse jogador está lesionado!");
+        setModalAlerta(true);
         return;
       }
       if (titulares.length >= 11) {
-        alert("Já existem 11 titulares!");
+        setMensagemAlerta("Já existem 11 titulares!");
+        setModalAlerta(true);
         return;
       }
 
       const porPosicao = titulares.filter((p) => p.posicao === player.posicao);
       if (porPosicao.length >= rowlimit) {
-        alert("A quantidade de titulares nessa posição foi atingida!");
+        setMensagemAlerta("A quantidade de titulares nessa posição foi atingida!");
+        setModalAlerta(true);
         return;
       }
 
@@ -176,6 +183,15 @@ export function App() {
           jogador={modalJogador}
           onConfirmar={handleConfirmarContratacao}
           onCancelar={handleCancelarModal}
+        />
+      )}
+
+      {modalAlerta && (
+        <ModalAlerta
+          tipo="erro"
+          titulo="Erro"
+          mensagem={mensagemAlerta}
+          onFechar={() => setModalAlerta(false)}
         />
       )}
 
