@@ -222,8 +222,9 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
         <KpiCard label="Qtd Transações" valor={String(resumo.quantidadeTransacoes)} cor="#1e3a5f" />
       </div>
 
-      {/* ── Gráfico + Cards secundários ── */}
+      {/* ── Gráfico + Folha Salarial (mesma altura) ── */}
       <div style={s.gridSecundario}>
+        {/* Card Receitas vs Despesas */}
         <div style={s.card}>
           <p style={s.cardTitulo}>Receitas vs Despesas</p>
           <GraficoRosca receitas={resumo.receitas} despesas={resumo.despesas} />
@@ -239,23 +240,20 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={s.card}>
-            <p style={s.cardTitulo}>Folha Salarial</p>
-            <div style={s.limiteRow}>
-              <span style={s.limiteValorAtual}>{formatBRL(clube.despesaMensalAtual)}</span>
-              <span style={s.limiteSep}>/</span>
-              <span style={s.limiteMax}>{formatBRL(clube.limiteDespesaMensal)}</span>
-            </div>
-            <div style={s.barraFundo}>
-              <div style={{ ...s.barraFill, width: `${Math.min(usoLimite, 100)}%`, background: corBarra }} />
-            </div>
-            <div style={s.limiteFooter}>
-              <span style={s.muted}>Uso: {usoLimite.toFixed(1)}%</span>
-              <span style={{ ...s.muted, color: corBarra }}>Margem: {formatBRL(clube.margemDespesaMensal)}</span>
-            </div>
+        <div style={s.card}>
+          <p style={s.cardTitulo}>Folha Salarial</p>
+          <div style={s.limiteRow}>
+            <span style={s.limiteValorAtual}>{formatBRL(clube.despesaMensalAtual)}</span>
+            <span style={s.limiteSep}>/</span>
+            <span style={s.limiteMax}>{formatBRL(clube.limiteDespesaMensal)}</span>
           </div>
-
+          <div style={s.barraFundo}>
+            <div style={{ ...s.barraFill, width: `${Math.min(usoLimite, 100)}%`, background: corBarra }} />
+          </div>
+          <div style={s.limiteFooter}>
+            <span style={s.muted}>Uso: {usoLimite.toFixed(1)}%</span>
+            <span style={{ ...s.muted, color: corBarra }}>Margem: {formatBRL(clube.margemDespesaMensal)}</span>
+          </div>
         </div>
       </div>
 
@@ -288,7 +286,6 @@ const s: Record<string, React.CSSProperties> = {
   page: { background: "#ffffff", minHeight: "100vh", padding: "2rem", boxSizing: "border-box", width: "100%", overflowX: "hidden", fontFamily: "'Inter', 'Segoe UI', sans-serif" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" },
   titulo: { fontSize: "2.75rem", fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: "-0.02em", fontFamily: "'Inter', 'Segoe UI', sans-serif" },
-  nomeClube: { fontSize: "0.875rem", color: "#94a3b8", margin: "0.2rem 0 0", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" },
   badge: { background: "#f0fdf4", color: "#00c774", border: "1px solid #bbf7d0", borderRadius: "999px", fontSize: "0.95rem", fontWeight: 600, padding: "0.3rem 0.85rem", letterSpacing: "0.04em", whiteSpace: "nowrap" },
   btnReceita: { background: "#00c774", color: "#ffffff", border: "none", borderRadius: "999px", fontSize: "0.95rem", fontWeight: 600, padding: "0.3rem 1rem", cursor: "pointer", whiteSpace: "nowrap" },
   divider: { height: "1px", background: "#f1f5f9", marginBottom: "1.75rem" },
@@ -297,7 +294,8 @@ const s: Record<string, React.CSSProperties> = {
   kpiTop: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" },
   kpiLabel: { fontSize: "0.92rem", textTransform: "uppercase", letterSpacing: "0.07em", color: "#94a3b8", fontWeight: 600 },
   kpiValor: { fontSize: "1.55rem", fontWeight: 800, margin: 0, letterSpacing: "-0.01em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
-  gridSecundario: { display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "1rem" },
+  // Grid com colunas iguais — sem wrapper extra
+  gridSecundario: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" },
   card: { background: "#ffffff", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "1.25rem 1.4rem", boxShadow: "0 1px 4px rgba(15,23,42,0.04)", minWidth: 0 },
   cardTitulo: { fontSize: "1rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "#94a3b8", margin: "0 0 1rem" },
   roscaWrap: { display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" },
@@ -313,11 +311,6 @@ const s: Record<string, React.CSSProperties> = {
   barraFundo: { height: "7px", borderRadius: "999px", background: "#f1f5f9", overflow: "hidden", marginBottom: "0.5rem" },
   barraFill: { height: "100%", borderRadius: "999px", transition: "width 0.5s ease" },
   limiteFooter: { display: "flex", justifyContent: "space-between", fontSize: "0.98rem", fontWeight: 600, flexWrap: "wrap", gap: "0.25rem" },
-  conferRow: { display: "flex", justifyContent: "space-between", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" },
-  confVal: { fontSize: "1rem", fontWeight: 700, color: "#0f172a", margin: "0.2rem 0 0" },
-  alertaWrap: { display: "flex", alignItems: "center", gap: "0.5rem", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "8px", padding: "0.6rem 0.85rem" },
-  alertaIcon: { fontSize: "1.1rem", flexShrink: 0 },
-  alertaTexto: { fontSize: "1.0rem", color: "#92400e", fontWeight: 500 },
   transacoesLista: { display: "flex", flexDirection: "column", gap: "0.1rem" },
   transacaoItem: { display: "flex", alignItems: "center", gap: "1.05rem", padding: "0.65rem 0", borderBottom: "1px solid #f8fafc" },
   transacaoDot: { width: 10, height: 10, borderRadius: "50%", flexShrink: 0 },
