@@ -45,8 +45,9 @@ function GraficoRosca({ receitas, despesas }: { receitas: number; despesas: numb
 }
 
 // ── Modal Adicionar Receita ───────────────────────────────────────────────────
-function ModalAdicionarReceita({ clubeId, onFechar, onSucesso }: {
+function ModalAdicionarReceita({ clubeId, tipo, onFechar, onSucesso }: {
   clubeId: number;
+  tipo: "RECEITA" | "DESPESA";
   onFechar: () => void;
   onSucesso: () => void;
 }) {
@@ -73,7 +74,7 @@ function ModalAdicionarReceita({ clubeId, onFechar, onSucesso }: {
       await criarTransacao({
         descricao: descricao.trim(),
         valor: valorNum,
-        tipo: "RECEITA",
+        tipo,
         clubeId,
       });
       onSucesso();
@@ -89,7 +90,7 @@ function ModalAdicionarReceita({ clubeId, onFechar, onSucesso }: {
     <div style={s.modalOverlay} onClick={onFechar}>
       <div style={s.modalBox} onClick={(e) => e.stopPropagation()}>
         <div style={s.modalHeader}>
-          <p style={s.modalTitulo}>Adicionar Receita</p>
+          <p style={s.modalTitulo}>{tipo === "RECEITA" ? "Adicionar Receita" : "Adicionar Gasto"}</p>
           <button style={s.modalFechar} onClick={onFechar}>✕</button>
         </div>
         <div style={s.modalCampo}>
@@ -167,7 +168,7 @@ function ListaTransacoes({
 export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
   const [resumo, setResumo] = useState<ResumoClube | null>(null);
   const [erro, setErro] = useState<string | null>(null);
-  const [modalAberto, setModalAberto] = useState(false);
+  const [modalAberto, setModalAberto] = useState<"RECEITA" | "DESPESA" | null>(null);
   const [refreshTransacoes, setRefreshTransacoes] = useState(0);
 
   function carregarResumo() {
@@ -195,19 +196,14 @@ export function TelaFinanceiro({ clubeId }: TelaFinanceiroProps) {
 
   return (
     <div style={s.page}>
-      {modalAberto && (
-        <ModalAdicionarReceita
-          clubeId={clubeId}
-          onFechar={() => setModalAberto(false)}
-          onSucesso={handleSucesso}
-        />
-      )}
+      {modalAberto && <ModalAdicionarReceita clubeId={clubeId} tipo={modalAberto} onFechar={() => setModalAberto(null)} onSucesso={handleSucesso} />}
 
       {/* ── Cabeçalho ── */}
       <div style={s.header}>
         <h1 style={s.titulo}>Financeiro</h1>
         <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-          <button style={s.btnReceita} onClick={() => setModalAberto(true)}>+ Adicionar Receita</button>
+          <button style={s.btnGasto} onClick={() => setModalAberto("DESPESA")}>+ Adicionar Gasto</button>
+          <button style={s.btnReceita} onClick={() => setModalAberto("RECEITA")}>+ Adicionar Receita</button>
           <span style={s.badge}>Visão Geral</span>
         </div>
       </div>
@@ -288,6 +284,7 @@ const s: Record<string, React.CSSProperties> = {
   titulo: { fontSize: "2.75rem", fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: "-0.02em", fontFamily: "'Inter', 'Segoe UI', sans-serif" },
   badge: { background: "#f0fdf4", color: "#00c774", border: "1px solid #bbf7d0", borderRadius: "999px", fontSize: "0.95rem", fontWeight: 600, padding: "0.3rem 0.85rem", letterSpacing: "0.04em", whiteSpace: "nowrap" },
   btnReceita: { background: "#00c774", color: "#ffffff", border: "none", borderRadius: "999px", fontSize: "0.95rem", fontWeight: 600, padding: "0.3rem 1rem", cursor: "pointer", whiteSpace: "nowrap" },
+  btnGasto: { background: "#f87171", color: "#ffffff", border: "none", borderRadius: "999px", fontSize: "0.95rem", fontWeight: 600, padding: "0.3rem 1rem", cursor: "pointer", whiteSpace: "nowrap" },
   divider: { height: "1px", background: "#f1f5f9", marginBottom: "1.75rem" },
   gridKpi: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "1.25rem" },
   kpiCard: { background: "#ffffff", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "1.1rem 1.25rem", boxShadow: "0 1px 4px rgba(15,23,42,0.04)", minWidth: 0 },
