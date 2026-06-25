@@ -95,7 +95,7 @@ function ModalAdicionarReceita({ clubeId, tipo, onFechar, onSucesso }: {
         </div>
         <div style={s.modalCampo}>
           <label style={s.modalLabel}>Descrição *</label>
-          <input style={s.modalInput} placeholder="Ex: Patrocínio, bilheteria..." value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+          <input style={s.modalInput} placeholder={tipo === "RECEITA" ? "Ex: Patrocínio, bilheteria..." : "Ex: Equipamentos, viagem..."} value={descricao} onChange={(e) => setDescricao(e.target.value)} />
         </div>
         <div style={s.modalCampo}>
           <label style={s.modalLabel}>Valor (R$) *</label>
@@ -103,7 +103,7 @@ function ModalAdicionarReceita({ clubeId, tipo, onFechar, onSucesso }: {
         </div>
         <div style={s.modalCampo}>
           <label style={s.modalLabel}>Categoria</label>
-          <input style={s.modalInput} placeholder="Ex: Patrocínio, Bilheteria..." value={categoria} onChange={(e) => setCategoria(e.target.value)} />
+          <input style={s.modalInput} placeholder={tipo === "RECEITA" ? "Ex: Patrocínio, Bilheteria..." : "Ex: Equipamentos, Infraestrutura..."} value={categoria} onChange={(e) => setCategoria(e.target.value)} />
         </div>
         <div style={s.modalCampo}>
           <label style={s.modalLabel}>Data</label>
