@@ -129,7 +129,7 @@ function MinhasOrdens() {
   return (
     <div style={c.ordensLista}>
       {transacoes.map((t: any, i: number) => {
-        const isEntrada = t.tipo === "receita" || t.valor > 0;
+        const isEntrada = t.tipo === "RECEITA";
         return (
           <div key={i} style={c.ordemItem}>
             <div style={{ ...c.ordemDot, background: isEntrada ? "#00c774" : "#f87171" }} />
@@ -140,7 +140,7 @@ function MinhasOrdens() {
               </p>
             </div>
             <span style={{ ...c.ordemValor, color: isEntrada ? "#00c774" : "#f87171" }}>
-              {isEntrada ? "+" : ""}{formatBRL(Math.abs(t.valor ?? 0))}
+              {isEntrada ? "+" : "-"}{formatBRL(Math.abs(t.valor ?? 0))}
             </span>
           </div>
         );
