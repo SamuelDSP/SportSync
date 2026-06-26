@@ -40,9 +40,9 @@ function formatBRL(valor: number) {
 }
 
 function formatValor(valor: number) {
-  if (valor >= 1_000_000) return `€ ${(valor / 1_000_000).toFixed(1)}M`;
-  if (valor >= 1_000) return `€ ${(valor / 1_000).toFixed(0)}K`;
-  return `€ ${valor}`;
+  if (valor >= 1_000_000) return `R$ ${(valor / 1_000_000).toFixed(1)}M`;
+  if (valor >= 1_000) return `R$ ${(valor / 1_000).toFixed(0)}K`;
+  return `R$ ${valor}`;
 }
 
 interface TelaMercadoProps {
